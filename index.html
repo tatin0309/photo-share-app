@@ -387,11 +387,30 @@
                     const drawBody = (img = null) => {
                         if (img) {
                             const size = 500;
+                            const targetX = 150;
+                            const targetY = 80;
+                            
+                            // アスペクト比維持（object-fit: cover 相当）の計算
+                            let sw, sh, sx, sy;
+                            const imgRatio = img.width / img.height;
+                            if (imgRatio > 1) { // 横長
+                                sh = img.height;
+                                sw = img.height;
+                                sx = (img.width - img.height) / 2;
+                                sy = 0;
+                            } else { // 縦長
+                                sw = img.width;
+                                sh = img.width;
+                                sx = 0;
+                                sy = (img.height - img.width) / 2;
+                            }
+
                             ctx.save();
                             ctx.beginPath();
-                            ctx.roundRect(150, 80, size, size, 40);
+                            ctx.roundRect(targetX, targetY, size, size, 40);
                             ctx.clip();
-                            ctx.drawImage(img, 150, 80, size, size);
+                            // 切り抜き描画
+                            ctx.drawImage(img, sx, sy, sw, sh, targetX, targetY, size, size);
                             ctx.restore();
                         }
                         
