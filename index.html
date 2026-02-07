@@ -8,8 +8,7 @@
     <!-- Icons & Manifest -->
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%236366F1'/%3E%3Cpath d='M50 70 L70 70 L80 50 L100 50 L110 70 L130 70 L130 130 L50 130 Z' fill='none' stroke='white' stroke-width='12' stroke-linejoin='round'/%3E%3Ccircle cx='90' cy='100' r='20' stroke='white' stroke-width='8' fill='none'/%3E%3C/svg%3E">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%236366F1'/%3E%3Cpath d='M50 70 L70 70 L80 50 L100 50 L110 70 L130 70 L130 130 L50 130 Z' fill='none' stroke='white' stroke-width='12' stroke-linejoin='round'/%3E%3Ccircle cx='90' cy='100' r='20' stroke='white' stroke-width='8' fill='none'/%3E%3C/svg%3E">
-    <link rel="manifest" type="application/manifest+json"
-        href="data:application/manifest+json;base64,eyJuYW1lIjoiQUxMつなぐ BRIDGEIiwic2hvcnRfbmFtZSI6IkJSSURHRSIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmOGZhZmMiLCJ0aGVtZV9jb2xvciI6IiM2MzY2ZjEiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxODAgMTgwJyUzRSUzQ3JlY3Qgd2lkdGg9JzE4MCcgaGVpZ2h0PScxODAnIHJ4PSc0MCcgZmlsbD0nJTIzNjM2NkYxJy8lM0UlM0NwYXRoIGQ9J001MCA3MCBMNzAgNzAgTDgwIDUwIEwxMDAgNTAgTDExMCA3MCBMMTMwIDcwIExzMTMwIDEzMCBMNTAgMTMwIFonIGZpbGw9J25vbmUnIHN0cm9rZT0nd2hpdGUnIHN0cm9rZS13aWR0aD0nMTInIHN0cm9rZS1saW5lam9pbj0ncm91bmQnLzUzRSUzQ2NpcmNsZSBjeD0nOTAnIGN5PScxMDAnIHI9JzIwJyBzdHJva2U9J3doaXRlJyBzdHJva2Utd2lkdGg9JzhmIGZpbGw9J25vbmUnLzUzRSUzQy9zdmclMjIsc2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJwdXJwb3NlIjoiYW55In1dfQ==">
+    <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22ALL%E3%81%A4%E3%81%AA%E3%81%90%20BRIDGE%22%2C%22short_name%22%3A%22BRIDGE%22%2C%22description%22%3A%22Multi-purpose%20communication%20hub%20for%20family%2C%20friends%2C%20and%20business.%22%2C%22start_url%22%3A%22.%2Findex.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f0f2f5%22%2C%22theme_color%22%3A%22%236366f1%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20180%20180%27%253E%253Crect%20width%3D%27180%27%20height%3D%27180%27%20rx%3D%2740%27%20fill%3D%27%25236366F1%27%2F%253E%253Cpath%20d%3D%27M50%2070%20L70%2070%20L80%2050%20L100%2050%20L110%2070%20L130%2070%20L130%20130%20L50%20130%20Z%27%20fill%3D%27none%27%20stroke%3D%27white%27%20stroke-width%3D%2712%27%20stroke-linejoin%3D%27round%27%2F%253E%253Ccircle%20cx%3D%2790%27%20cy%3D%27100%27%20r%3D%2720%27%20stroke%3D%27white%27%20stroke-width%3D%278%27%20fill%3D%27none%27%2F%253E%253C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%22%7D%5D%7D">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- React & ReactDOM CDN -->
@@ -20,31 +19,88 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap');
         
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
         body {
-            font-family: 'BIZ UDGothic', sans-serif;
-            background-color: #f8fafc;
+            font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+            background: #f0f2f5;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        .font-ud { font-family: 'BIZ UDGothic', sans-serif; }
-
-        /* Smooth transitions for tab switching */
-        .fade-enter { opacity: 0; transform: translateY(10px); }
-        .fade-enter-active { opacity: 1; transform: translateY(0); transition: all 300ms ease-out; }
-
-        /* Corporate terminal look for photo metadata */
-        .terminal-overlay {
-            color: #00FF41;
-            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+        /* Animated Mesh Gradient Background */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.6;
+            transition: all 1.5s ease;
         }
+        .bg-mesh div {
+            position: absolute;
+            width: 50vw; height: 50vh;
+            border-radius: 50%;
+            animation: move 20s infinite alternate;
+        }
+        @keyframes move {
+            from { transform: translate(-20%, -20%) rotate(0deg); }
+            to { transform: translate(20%, 20%) rotate(360deg); }
+        }
+
+        /* Glassmorphism Classes */
+        .glass {
+            background: var(--glass-bg);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .premium-btn {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .premium-btn:hover:not(:disabled) {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .premium-btn:active:not(:disabled) {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Component Transitions */
+        .page-transition-enter { opacity: 0; transform: scale(0.98) translateY(10px); }
+        .page-transition-enter-active { opacity: 1; transform: scale(1) translateY(0); transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef, useMemo } = React;
+        const { useState, useEffect, useRef, useMemo, useCallback } = React;
+
+        // --- HOOKS: AUTO SAVE ---
+        const useAutoSave = (key, initialValue) => {
+            const [value, setValue] = useState(() => {
+                const saved = localStorage.getItem(`bridge_draft_${key}`);
+                return saved ? JSON.parse(saved) : initialValue;
+            });
+            useEffect(() => {
+                localStorage.setItem(`bridge_draft_${key}`, JSON.stringify(value));
+            }, [key, value]);
+            return [value, setValue];
+        };
 
         // --- UTILS: SHARE & DATA CONVERSION ---
         const dataURLtoFile = (dataurl, filename) => {
@@ -56,18 +112,47 @@
             return new File([u8arr], filename, {type:mime});
         };
 
+        const compressImage = (file, maxWidth = 1200) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const scale = maxWidth / img.width;
+                        if (scale < 1) {
+                            canvas.width = maxWidth;
+                            canvas.height = img.height * scale;
+                        } else {
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                        }
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(dataURLtoFile(canvas.toDataURL('image/jpeg', 0.8), file.name));
+                    };
+                };
+            });
+        };
+
         const shareContent = async (text, files = []) => {
             const fallback = () => {
                 window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
             };
 
             try {
-                const canShareFiles = files && files.length > 0 && navigator.canShare && navigator.canShare({ files });
+                // 自動画像圧縮
+                const compressedFiles = await Promise.all(
+                    files.map(f => f.type.startsWith('image/') ? compressImage(f) : Promise.resolve(f))
+                );
+
+                const canShareFiles = compressedFiles.length > 0 && navigator.canShare && navigator.canShare({ files: compressedFiles });
                 
-                // 共有処理（タイムアウト付き）
                 const sharePromise = (async () => {
                     if (canShareFiles) {
-                        await navigator.share({ files, title: 'BRIDGE' });
+                        await navigator.share({ files: compressedFiles, title: 'BRIDGE' });
                     } else if (navigator.share) {
                         await navigator.share({ text });
                     } else {
@@ -75,15 +160,11 @@
                     }
                 })();
 
-                // 2秒以上反応がない場合はフォールバック
                 const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2000));
                 await Promise.race([sharePromise, timeoutPromise]);
 
             } catch (err) {
-                // AbortError(ユーザーによるキャンセル)以外はLINEへ飛ばす
-                if (err.name !== 'AbortError') {
-                    fallback();
-                }
+                if (err.name !== 'AbortError') fallback();
             }
         };
 
@@ -119,40 +200,42 @@
            UI: FAMILY PANEL
            ========================================================================== */
         const FamilyPanel = () => {
-            const [draft, setDraft] = useState({ message: '', mood: 'happy', mediaFiles: [] });
+            const [draft, setDraft] = useAutoSave('family', { message: '', mood: 'happy', textPos: 'bottom' });
             const [previewUrl, setPreviewUrl] = useState(null);
-            const [processedFile, setProcessedFile] = useState(null);
             const [isGenerating, setIsGenerating] = useState(false);
-            const [fileType, setFileType] = useState('image'); // 'image' | 'video'
+            const [fileType, setFileType] = useState('image');
 
-            const handleFileChange = (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    const file = e.target.files[0];
-                    const type = file.type.startsWith('video/') ? 'video' : 'image';
+            const handleFileChange = async (e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    const files = Array.from(e.target.files);
+                    const type = files[0].type.startsWith('video/') ? 'video' : 'image';
                     setFileType(type);
-                    setPreviewUrl(URL.createObjectURL(file));
-                    setDraft({...draft, mediaFiles: [file]});
+                    setPreviewUrl(URL.createObjectURL(files[0]));
+                    setDraft({...draft, mediaFiles: files});
                 }
             };
 
             const simulateSend = async () => {
-                const file = draft.mediaFiles[0];
-                if(!draft.message && !file) return;
+                const files = draft.mediaFiles;
+                if(!draft.message && (!files || files.length === 0)) return;
 
                 setIsGenerating(true);
                 try {
-                    if (fileType === 'video' && file) {
-                        // 動画の場合はテキスト等を省き、動画のみ送信
-                        await shareContent(`家族へ動画を送信`, [file]);
+                    let fileToShare = files?.[0];
+                    if (files && files.length > 1) {
+                        const collageUrl = await CollageEngine.createCollage(files);
+                        fileToShare = dataURLtoFile(collageUrl, `family_collage_${Date.now()}.jpg`);
+                    }
+
+                    if (fileType === 'video' && fileToShare) {
+                        await shareContent(`家族へ動画を送信`, [fileToShare]);
                     } else if (draft.message || draft.mood) {
-                        // テキストまたは気分がある画像の場合はカード生成
-                        const dataUrl = await FamilyEngine.generateMessageCard(draft.message, draft.mood, file);
+                        const dataUrl = await FamilyEngine.generateMessageCard(draft.message, draft.mood, fileToShare, draft.textPos);
                         const processed = dataURLtoFile(dataUrl, `family_${Date.now()}.jpg`);
                         const moodText = draft.mood ? (draft.mood === 'happy' ? '😊 楽しい' : draft.mood === 'calm' ? '😌 まったり' : '🤩 わくわく') : '';
                         await shareContent(`【家族連絡】 ${moodText}`, [processed]);
-                    } else if (file) {
-                        // 写真のみの場合
-                        await shareContent(`家族へ写真を共有`, [file]);
+                    } else if (fileToShare) {
+                        await shareContent(`家族へ写真を共有`, [fileToShare]);
                     }
                 } catch (err) {
                     console.error("Share failed:", err);
@@ -162,41 +245,89 @@
             };
 
             return (
-                <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-pink-100 max-w-2xl mx-auto transition-all">
-                    <div className="bg-gradient-to-r from-pink-400 to-rose-300 p-6 text-white">
-                        <h2 className="text-2xl font-bold flex items-center gap-2">
-                            <Icons.Home className="w-6 h-6" /> 家族掲示板
-                        </h2>
-                        <p className="text-sm opacity-90 mt-1">大切な家族へ、今の気持ちを届けます。</p>
-                    </div>
-                    <div className="p-6 space-y-6">
-                        <div className="flex gap-2">
-                            {['none', 'happy', 'calm', 'excited'].map(mood => (
-                                <button key={mood} onClick={() => setDraft({...draft, mood: mood === 'none' ? null : mood})} 
-                                    className={`flex-1 py-3 rounded-xl font-bold transition-all text-[10px] md:text-sm ${((mood === 'none' && !draft.mood) || draft.mood === mood) ? 'bg-pink-500 text-white shadow-lg' : 'bg-gray-100 text-gray-500'}`}>
-                                    {mood === 'none' ? '😶 なし' : mood === 'happy' ? '😊 楽しい' : mood === 'calm' ? '😌 まったり' : '🤩 わくわく'}
-                                </button>
-                            ))}
+                <div className="glass rounded-[2.5rem] overflow-hidden max-w-2xl mx-auto transition-all">
+                    <div className="bg-gradient-to-r from-pink-500/80 to-rose-400/80 p-8 text-white relative">
+                        <div className="absolute right-4 top-4 bg-white/20 p-2 rounded-full backdrop-blur-md">
+                            <Icons.Home className="w-6 h-6" />
                         </div>
-                        <textarea className="w-full p-4 bg-pink-50 rounded-2xl h-32 focus:ring-2 focus:ring-pink-300 outline-none text-gray-700 font-bold"
-                            placeholder="今日のごはんは何かな？ / 今から帰るよ！" value={draft.message} onChange={e => setDraft({...draft, message: e.target.value})} />
-                        <div className="flex items-center gap-4">
-                            <label className="flex-grow">
-                                <div className="w-full py-4 bg-white border-2 border-dashed border-gray-300 rounded-2xl flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-50">
-                                    <Icons.Camera className="w-5 h-5 text-gray-400" />
-                                    <span className="text-gray-500 font-bold">写真・動画を添付</span>
+                        <h2 className="text-3xl font-black tracking-tighter">Family Board</h2>
+                        <p className="text-xs font-bold opacity-80 uppercase tracking-widest mt-1">Peaceful Connection</p>
+                    </div>
+                    <div className="p-8 space-y-8">
+                        {/* Mood Selector */}
+                        <div>
+                            <p className="text-[10px] font-black uppercase text-pink-400 mb-3 tracking-widest">Select Mood</p>
+                            <div className="flex gap-2">
+                                {['none', 'happy', 'calm', 'excited'].map(m => (
+                                    <button key={m} onClick={() => setDraft({...draft, mood: m === 'none' ? null : m})} 
+                                        className={`flex-1 py-3 rounded-2xl font-bold transition-all text-xs premium-btn ${((m === 'none' && !draft.mood) || draft.mood === m) ? 'bg-pink-500 text-white shadow-lg' : 'bg-gray-100/50 text-gray-500'}`}>
+                                        {m === 'none' ? '😶 なし' : m === 'happy' ? '😊 楽しい' : m === 'calm' ? '😌 まったり' : m === 'excited' ? '🤩 わくわく' : ''}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Message Input */}
+                        <div className="relative">
+                            <p className="text-[10px] font-black uppercase text-pink-400 mb-2 tracking-widest">Your Message</p>
+                            <textarea className="w-full p-6 bg-pink-50/50 rounded-[2rem] h-40 focus:ring-4 focus:ring-pink-200 outline-none text-gray-700 font-bold text-lg border border-pink-100 shadow-inner resize-none"
+                                placeholder="..." value={draft.message} onChange={e => setDraft({...draft, message: e.target.value})} />
+                            
+                            {/* Text Position Selector */}
+                            <div className="absolute bottom-4 right-4 flex gap-1 bg-white/50 backdrop-blur rounded-full p-1 border border-pink-200 shadow-sm">
+                                {['top', 'middle', 'bottom'].map(p => (
+                                    <button key={p} onClick={() => setDraft({...draft, textPos: p})} 
+                                        className={`p-1.5 rounded-full transition-all ${draft.textPos === p ? 'bg-pink-500 text-white' : 'text-pink-300 hover:bg-pink-100'}`}>
+                                        <div className={`w-3 h-1 bg-current rounded-full ${p === 'top' ? 'mb-2' : p === 'middle' ? 'my-0.5' : 'mt-2'}`}></div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Media Upload */}
+                        <div className="flex items-center gap-6">
+                            <label className="flex-1">
+                                <div className="w-full py-8 glass rounded-[2rem] flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-white/40 transition-all border-2 border-dashed border-pink-200 premium-btn">
+                                    <Icons.Camera className="w-10 h-10 text-pink-300" />
+                                    <span className="text-pink-400 font-black text-xs uppercase tracking-widest">Share Moments</span>
                                 </div>
-                                <input type="file" className="hidden" accept="image/*,video/*" onChange={handleFileChange} />
+                                <input type="file" className="hidden" accept="image/*,video/*" multiple onChange={handleFileChange} />
                             </label>
                             {previewUrl && (
-                                fileType === 'image' 
-                                    ? <img src={previewUrl} className="w-16 h-16 rounded-lg object-cover border-2 border-pink-200" />
-                                    : <video src={previewUrl} className="w-16 h-16 rounded-lg object-cover border-2 border-pink-200" muted />
+                                <div className="w-32 h-32 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white transform rotate-3 relative group">
+                                    {fileType === 'image' 
+                                        ? <img src={previewUrl} className="w-full h-full object-cover" />
+                                        : <video src={previewUrl} className="w-full h-full object-cover" muted />
+                                    }
+                                    {draft.mediaFiles?.length > 1 && (
+                                        <div className="absolute top-1 right-1 bg-pink-500 text-white text-[8px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-white">
+                                            +{draft.mediaFiles.length - 1}
+                                        </div>
+                                    )}
+                                    <button onClick={() => {setPreviewUrl(null); setDraft({...draft, mediaFiles: []});}} className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                        <Icons.Zap className="w-8 h-8 text-white rotate-45" />
+                                    </button>
+                                </div>
                             )}
                         </div>
-                        <button onClick={simulateSend} disabled={isGenerating || (!draft.message && !draft.mood && draft.mediaFiles.length === 0)}
-                            className={`w-full py-4 ${isGenerating ? 'bg-gray-400' : 'bg-pink-500 hover:bg-pink-600'} text-white rounded-2xl font-bold shadow-lg transition-all flex items-center justify-center gap-2`}>
-                            {isGenerating ? '準備中...' : <React.Fragment><Icons.Send className="w-5 h-5" /> LINEでみんなに送る</React.Fragment>}
+
+                        {/* Voice Card Concept */}
+                        <div className="bg-pink-50/50 p-4 rounded-3xl flex items-center justify-between border border-pink-100">
+                            <div className="flex items-center gap-3">
+                                <div className="p-3 bg-pink-100 rounded-2xl text-pink-500">
+                                    <Icons.Zap className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-pink-400">Voice Card</p>
+                                    <p className="text-xs font-bold text-gray-500">音声メッセージをQRで送る</p>
+                                </div>
+                            </div>
+                            <button className="px-6 py-2 bg-pink-200 text-pink-600 rounded-full font-black text-[10px] uppercase hover:bg-pink-300 transition-colors">Record (Soon)</button>
+                        </div>
+
+                        <button onClick={simulateSend} disabled={isGenerating || (!draft.message && !draft.mood && (!draft.mediaFiles || draft.mediaFiles.length === 0))}
+                            className={`w-full py-6 premium-btn ${isGenerating ? 'bg-gray-300' : 'bg-gradient-to-r from-pink-500 to-rose-500 shadow-[0_10px_30px_rgba(244,63,94,0.3)]'} text-white rounded-[2rem] font-black text-xl flex items-center justify-center gap-3`}>
+                            {isGenerating ? 'Processing...' : <React.Fragment><Icons.Send className="w-6 h-6" /> Send via LINE</React.Fragment>}
                         </button>
                     </div>
                 </div>
@@ -207,40 +338,57 @@
            LOGIC: CORPORATE ENGINE (業務用報告)
            ========================================================================== */
         class CorporateEngine {
-            static async processEvidencePhoto(file, meta) {
-                return new Promise((resolve, reject) => {
+            static async processEvidencePhoto(file, data) {
+                return new Promise((resolve) => {
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         const img = new Image();
                         img.onload = () => {
                             const canvas = document.createElement('canvas');
                             const ctx = canvas.getContext('2d');
-                            canvas.width = img.width; canvas.height = img.height;
-                            ctx.drawImage(img, 0, 0);
+                            canvas.width = 1200; canvas.height = 1200;
 
-                            const barHeight = Math.max(img.height * 0.12, 60);
-                            ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
-                            ctx.fillRect(0, img.height - barHeight, img.width, barHeight);
+                            // 1. Draw Image
+                            let sw, sh, sx, sy;
+                            const ratio = img.width / img.height;
+                            if (ratio > 1) { sh = img.height; sw = img.height; sx = (img.width - img.height) / 2; sy = 0; }
+                            else { sw = img.width; sh = img.width; sx = 0; sy = (img.height - img.width) / 2; }
+                            ctx.drawImage(img, sx, sy, sw, sh, 0, 0, 1200, 1200);
 
-                            const fontSize = Math.max(img.height * 0.03, 18);
-                            ctx.font = `bold ${fontSize}px sans-serif`;
-                            ctx.fillStyle = '#00FF41'; 
+                            // 2. Terminal Overlay Effect
+                            ctx.fillStyle = 'rgba(0, 20, 0, 0.4)';
+                            ctx.fillRect(0, 0, 1200, 1200);
+
+                            // Scanlines
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                            for(let i=0; i<1200; i+=4) ctx.fillRect(0, i, 1200, 1);
+
+                            // Metadata Sidebar
+                            ctx.fillStyle = 'rgba(0, 255, 65, 0.8)';
+                            ctx.font = 'bold 24px monospace';
                             
-                            const date = meta.time || new Date();
-                            const dateStr = `${date.getFullYear()}/${String(date.getMonth()+1).padStart(2,'0')}/${String(date.getDate()).padStart(2,'0')} ${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`;
-                            const locStr = `LAT:${meta.lat.toFixed(5)} LNG:${meta.lng.toFixed(5)}`;
-                            const speedStr = `${meta.speed} km/h`;
+                            const lines = [
+                                `> BRIDGE OPS SECURE_FEED`,
+                                `> TIMESTAMP: ${data.time.toISOString()}`,
+                                `> LATITUDE:  ${data.lat.toFixed(6)}`,
+                                `> LONGITUDE: ${data.lng.toFixed(6)}`,
+                                `> SPEED:     ${data.speed} KM/H`,
+                                `> DEVICE:    MOBILE_UNIT_01`,
+                                `--------------------------`,
+                                `> STATUS:    VERIFIED_EVIDENCE`
+                            ];
 
-                            ctx.fillText(dateStr, 20, img.height - (barHeight * 0.65));
-                            ctx.fillText(locStr, 20, img.height - (barHeight * 0.3));
-                            ctx.textAlign = 'right';
-                            ctx.fillText(speedStr, img.width - 20, img.height - (barHeight / 2));
+                            lines.forEach((line, i) => {
+                                ctx.shadowColor = '#00FF41'; ctx.shadowBlur = 10;
+                                ctx.fillText(line, 50, 100 + (i * 40));
+                            });
 
-                            ctx.strokeStyle = 'rgba(255, 50, 50, 0.8)';
-                            ctx.lineWidth = Math.max(img.width * 0.01, 5);
-                            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+                            // Corner Accents
+                            ctx.lineWidth = 4; ctx.strokeStyle = '#00FF41';
+                            ctx.beginPath(); ctx.moveTo(30, 30); ctx.lineTo(100, 30); ctx.moveTo(30, 30); ctx.lineTo(30, 100); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(1170, 1170); ctx.lineTo(1100, 1170); ctx.moveTo(1170, 1170); ctx.lineTo(1170, 1100); ctx.stroke();
 
-                            resolve(canvas.toDataURL('image/jpeg', 0.9));
+                            resolve(canvas.toDataURL('image/jpeg', 0.8));
                         };
                         img.src = e.target.result;
                     };
@@ -249,20 +397,63 @@
             }
         }
 
+        class CollageEngine {
+            static async createCollage(files) {
+                const images = await Promise.all(files.map(f => new Promise(res => {
+                    const r = new FileReader();
+                    r.onload = (e) => {
+                        const i = new Image();
+                        i.onload = () => res(i);
+                        i.src = e.target.result;
+                    };
+                    r.readAsDataURL(f);
+                })));
+
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 1200; canvas.height = 1200;
+                ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, 1200, 1200);
+
+                const count = images.length;
+                const cols = count > 1 ? 2 : 1;
+                const rows = Math.ceil(count / cols);
+                const w = 1200 / cols; const h = 1200 / rows;
+
+                images.forEach((img, i) => {
+                    const x = (i % cols) * w;
+                    const y = Math.floor(i / cols) * h;
+                    
+                    let sw, sh, sx, sy;
+                    const cRatio = w / h;
+                    const iRatio = img.width / img.height;
+                    if (iRatio > cRatio) { sh = img.height; sw = img.height * cRatio; sx = (img.width - sw) / 2; sy = 0; }
+                    else { sw = img.width; sh = img.width / cRatio; sx = 0; sy = (img.height - sh) / 2; }
+                    
+                    ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+                    ctx.strokeStyle = 'white'; ctx.lineWidth = 10; ctx.strokeRect(x, y, w, h);
+                });
+
+                return canvas.toDataURL('image/jpeg', 0.9);
+            }
+        }
+
         /* ==========================================================================
            UI: CORPORATE PANEL
            ========================================================================== */
         const CorporatePanel = () => {
-            const [draft, setDraft] = useState({ title: '', description: '', urgency: 'medium', location: '東京都...' });
+            const [draft, setDraft] = useAutoSave('corporate', { title: '', description: '', urgency: 'medium', location: 'Searching...' });
             const [isProcessing, setIsProcessing] = useState(false);
             const [processedUrl, setProcessedUrl] = useState(null);
             const [processedFile, setProcessedFile] = useState(null);
-            const [fileType, setFileType] = useState('image'); // 'image' | 'video'
-            const [gps, setGps] = useState({ lat: 35.6812, lng: 139.7671, speed: 0 });
+            const [fileType, setFileType] = useState('image');
+            const [gps, setGps] = useState({ lat: 0, lng: 0, speed: 0, city: 'Scanning...' });
 
             useEffect(() => {
                 const watchId = navigator.geolocation.watchPosition(
-                    (pos) => setGps({ lat: pos.coords.latitude, lng: pos.coords.longitude, speed: Math.floor(pos.coords.speed || 0) * 3.6 }),
+                    async (pos) => {
+                        const { latitude, longitude, speed } = pos.coords;
+                        setGps(prev => ({ ...prev, lat: latitude, lng: longitude, speed: Math.floor(speed || 0) * 3.6 }));
+                    },
                     (err) => console.error(err),
                     { enableHighAccuracy: true }
                 );
@@ -270,21 +461,30 @@
             }, []);
 
             const handlePhoto = async (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    const file = e.target.files[0];
+                if (e.target.files && e.target.files.length > 0) {
+                    const files = Array.from(e.target.files);
                     setIsProcessing(true);
                     try {
-                        if (file.type.startsWith('image/')) {
-                            setFileType('image');
-                            const url = await CorporateEngine.processEvidencePhoto(file, { ...gps, time: new Date() });
-                            setProcessedUrl(url);
-                            setProcessedFile(dataURLtoFile(url, "report_" + Date.now() + ".jpg"));
-                        } else if (file.type.startsWith('video/')) {
-                            setFileType('video');
-                            const url = URL.createObjectURL(file);
-                            setProcessedUrl(url);
-                            setProcessedFile(file);
-                        }
+                        const processed = await Promise.all(files.map(async (file, i) => {
+                            if (file.type.startsWith('image/')) {
+                                const url = await CorporateEngine.processEvidencePhoto(file, { ...gps, time: new Date() });
+                                return { 
+                                    url, 
+                                    file: dataURLtoFile(url, `evidence_${i}_${Date.now()}.jpg`),
+                                    type: 'image'
+                                };
+                            } else {
+                                return { 
+                                    url: URL.createObjectURL(file), 
+                                    file,
+                                    type: 'video'
+                                };
+                            }
+                        }));
+
+                        setProcessedUrl(processed[0].url);
+                        setFileType(processed[0].type);
+                        setProcessedFile(processed.map(p => p.file));
                     } catch (err) {
                         console.error(err);
                     } finally {
@@ -294,82 +494,84 @@
             };
 
             const sendReport = () => {
-                if(!draft.title) return;
-                const urgencyEmoji = draft.urgency === 'high' ? '🚨【至急】' : draft.urgency === 'medium' ? '⚠️【注意】' : '✅【通常】';
-                const date = new Date();
-                const timeStr = `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
-                
-                const mediaNote = fileType === 'image' 
-                    ? `※証拠画像内にデータ焼き込み済み。`
-                    : `※【動画証拠】発生地点: LAT ${gps.lat.toFixed(5)}, LNG ${gps.lng.toFixed(5)}, 速度: ${gps.speed} km/h`;
-
-                const text = `${urgencyEmoji} 現場報告\n` +
+                const urgencyEmoji = draft.urgency === 'high' ? '🚨【CRITICAL】' : draft.urgency === 'medium' ? '⚠️【CAUTION】' : '✅【NORMAL】';
+                const text = `${urgencyEmoji} 現場デジタル報告\n` +
+                    `ID: #${Math.floor(Date.now()/1000)}\n` +
                     `------------------\n` +
                     `件名: ${draft.title}\n` +
-                    `内容: ${draft.description}\n` +
-                    `場所: ${draft.location}\n` +
-                    `時刻: ${timeStr}\n` +
-                    `速度: ${gps.speed} km/h\n` +
+                    `状況: ${draft.description}\n` +
+                    `位置: LAT ${gps.lat.toFixed(5)}, LNG ${gps.lng.toFixed(5)}\n` +
+                    `時刻: ${new Date().toLocaleTimeString()}\n` +
                     `------------------\n` +
-                    `${mediaNote}`;
+                    `※証拠メディア添付済み`;
                 
-                shareContent(text, processedFile ? [processedFile] : []);
+                shareContent(text, Array.isArray(processedFile) ? processedFile : (processedFile ? [processedFile] : []));
             };
 
             return (
-                <div className="bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border-4 border-slate-700 max-w-2xl mx-auto text-slate-100 transition-all">
-                    <div className="bg-slate-900 p-6 flex justify-between items-center border-b border-slate-700">
-                        <div>
-                            <h2 className="text-xl font-bold flex items-center gap-2">
-                                <Icons.Briefcase className="w-6 h-6 text-blue-400" /> 現場報告システム
-                            </h2>
-                            <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Status: SECURE GEOLOCATION ENGINE</p>
+                <div className="glass rounded-[2rem] overflow-hidden max-w-2xl mx-auto text-slate-800 border-2 border-slate-300 shadow-2xl">
+                    <div className="bg-slate-900 p-8 text-white relative">
+                        <div className="absolute right-4 top-4 animate-pulse">
+                            <div className="w-3 h-3 bg-red-500 rounded-full shadow-[0_0_10px_#ef4444]"></div>
+                        </div>
+                        <h2 className="text-2xl font-black uppercase tracking-tighter flex items-center gap-3">
+                            <Icons.Briefcase className="w-7 h-7 text-blue-400" /> Ops Report
+                        </h2>
+                        <div className="mt-4 grid grid-cols-2 gap-4 text-[9px] font-mono text-slate-400">
+                            <div className="bg-black/30 p-2 rounded">LOC: {gps.lat.toFixed(4)}, {gps.lng.toFixed(4)}</div>
+                            <div className="bg-black/30 p-2 rounded">SPD: {gps.speed} KM/H</div>
                         </div>
                     </div>
-                    <div className="p-6 space-y-4">
-                        <select className="w-full bg-slate-700 p-3 rounded-xl border border-slate-600 outline-none focus:ring-2 focus:ring-blue-500 text-white"
-                            value={draft.urgency} onChange={e => setDraft({...draft, urgency: e.target.value})}>
-                            <option value="low">通常報告 (Normal)</option>
-                            <option value="medium">注意喚起 (Caution)</option>
-                            <option value="high">至急報告 (Priority)</option>
-                        </select>
-                        <input className="w-full bg-slate-700 p-3 rounded-xl border border-slate-600 outline-none font-bold" 
-                            placeholder="報告件名 (例: 道路混雑、納品完了)" value={draft.title} onChange={e => setDraft({...draft, title: e.target.value})} />
-                        <textarea className="w-full bg-slate-700 p-3 rounded-xl border border-slate-600 h-24 font-bold" 
-                            placeholder="状況詳細を記入してください..." value={draft.description} onChange={e => setDraft({...draft, description: e.target.value})} />
+                    
+                    <div className="p-8 space-y-6">
+                        <div className="flex gap-2 bg-slate-100 p-1.5 rounded-2xl">
+                            {['low', 'medium', 'high'].map(u => (
+                                <button key={u} onClick={() => setDraft({...draft, urgency: u})}
+                                    className={`flex-1 py-2 text-[10px] font-black rounded-xl transition-all ${draft.urgency === u ? (u === 'high' ? 'bg-red-600 text-white' : 'bg-slate-800 text-white') : 'text-slate-400'}`}>
+                                    {u.toUpperCase()}
+                                </button>
+                            ))}
+                        </div>
+
+                        <input className="w-full bg-white border-2 border-slate-200 p-4 rounded-2xl outline-none focus:border-blue-500 font-bold transition-all shadow-sm"
+                            placeholder="Subject / Title" value={draft.title} onChange={e => setDraft({...draft, title: e.target.value})} />
                         
-                        <div className="grid grid-cols-2 gap-4">
+                        <textarea className="w-full bg-white border-2 border-slate-200 p-4 rounded-2xl h-32 outline-none focus:border-blue-500 font-bold transition-all shadow-sm resize-none"
+                            placeholder="Detailed Situation Report..." value={draft.description} onChange={e => setDraft({...draft, description: e.target.value})} />
+
+                        <div className="grid grid-cols-2 gap-6">
                             <label className="cursor-pointer">
-                                <div className="h-40 bg-slate-900 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed border-slate-600 hover:border-blue-500 transition-all">
-                                    {isProcessing ? (
-                                        <div className="animate-spin text-blue-400 font-bold">...</div>
-                                    ) : (
-                                        <div className="flex gap-2">
-                                            <Icons.Camera className="w-10 h-10 text-slate-500" />
-                                            <div className="w-px h-10 bg-slate-700"></div>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
-                                        </div>
-                                    )}
-                                    <span className="text-xs text-slate-400 mt-2 font-bold uppercase">証拠写真・動画を撮影</span>
+                                <div className="h-44 glass-dark bg-slate-800 text-white rounded-[2rem] flex flex-col items-center justify-center border-2 border-dashed border-slate-600 premium-btn">
+                                    <Icons.Camera className="w-10 h-10 mb-2 opacity-50" />
+                                    <span className="text-[10px] font-black uppercase tracking-widest">Capture Evidence</span>
                                 </div>
-                                <input type="file" className="hidden" accept="image/*,video/*" capture="environment" onChange={handlePhoto} />
+                                <input type="file" className="hidden" accept="image/*,video/*" capture="environment" multiple onChange={handlePhoto} />
                             </label>
-                            <div className="h-40 bg-black rounded-2xl overflow-hidden shadow-inner border border-slate-700 relative">
-                                {processedUrl ? (
+                            <div className="h-44 bg-black rounded-[2rem] overflow-hidden border-2 border-slate-800 shadow-inner relative">
+                                {isProcessing ? (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                                    </div>
+                                ) : processedUrl ? (
                                     fileType === 'image' ? (
-                                        <img src={processedUrl} className="w-full h-full object-cover" />
+                                        <div className="relative h-full">
+                                            <img src={processedUrl} className="w-full h-full object-cover" />
+                                            {processedFile?.length > 1 && (
+                                                <div className="absolute bottom-2 right-2 bg-blue-600 text-white text-[10px] font-black px-2 py-1 rounded">+{processedFile.length - 1} FILES</div>
+                                            )}
+                                        </div>
                                     ) : (
                                         <video src={processedUrl} className="w-full h-full object-cover" controls />
                                     )
                                 ) : (
-                                    <div className="flex items-center justify-center h-full text-[10px] text-slate-600 font-bold uppercase">PREVIEW / DATA</div>
+                                    <div className="flex items-center justify-center h-full text-[10px] font-mono text-slate-700">AWAITING INPUT...</div>
                                 )}
                             </div>
                         </div>
 
                         <button onClick={sendReport} disabled={!processedUrl || !draft.title}
-                            className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-xl ${draft.urgency === 'high' ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'} disabled:opacity-50`}>
-                            <Icons.Zap className="w-5 h-5" /> 本部へ送信 ({fileType === 'image' ? '証拠焼き込み済' : 'データ文面記載'})
+                            className={`w-full py-6 premium-btn ${draft.urgency === 'high' ? 'bg-red-600 shadow-red-200' : 'bg-slate-900 shadow-slate-200'} text-white rounded-[2rem] font-black text-xl flex items-center justify-center gap-3 disabled:opacity-30`}>
+                            <Icons.Zap className="w-6 h-6" /> SUBMIT REPORT
                         </button>
                     </div>
                 </div>
@@ -380,7 +582,7 @@
            LOGIC: FAMILY ENGINE (家族連絡)
            ========================================================================== */
         class FamilyEngine {
-            static async generateMessageCard(message, mood, originalFile) {
+            static async generateMessageCard(message, mood, originalFile, textPos = 'bottom') {
                 return new Promise((resolve, reject) => {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
@@ -388,37 +590,41 @@
 
                     const drawBody = (img = null) => {
                         try {
-                            const grad = ctx.createLinearGradient(0, 0, 0, 800);
+                            const grad = ctx.createLinearGradient(0, 0, 800, 800);
                             grad.addColorStop(0, '#FFF5F7'); grad.addColorStop(1, '#FFE4E8');
                             ctx.fillStyle = grad; ctx.fillRect(0, 0, 800, 800);
 
                             if (img) {
-                                const size = 500;
-                                const tx = 150, ty = 80;
+                                const size = 520;
+                                const tx = 140, ty = 140;
                                 let sw, sh, sx, sy;
                                 const ratio = img.width / img.height;
                                 if (ratio > 1) { sh = img.height; sw = img.height; sx = (img.width - img.height) / 2; sy = 0; }
                                 else { sw = img.width; sh = img.width; sx = 0; sy = (img.height - img.width) / 2; }
                                 
                                 ctx.save();
-                                // roundRect の代わりに四角形で描画（互換性重視）
-                                ctx.beginPath();
-                                ctx.rect(tx, ty, size, size);
-                                ctx.clip();
+                                ctx.shadowColor = 'rgba(244, 63, 94, 0.2)';
+                                ctx.shadowBlur = 40;
+                                ctx.beginPath(); ctx.rect(tx, ty, size, size); ctx.clip();
                                 ctx.drawImage(img, sx, sy, sw, sh, tx, ty, size, size);
                                 ctx.restore();
+
+                                // Stylish border around photo
+                                ctx.strokeStyle = 'white'; ctx.lineWidth = 15;
+                                ctx.strokeRect(tx, ty, size, size);
                             }
                             
                             if (mood) {
                                 ctx.fillStyle = '#E11D48';
-                                ctx.font = 'bold 60px sans-serif';
+                                ctx.font = 'black 50px sans-serif';
                                 ctx.textAlign = 'center';
                                 const moodIcon = mood === 'happy' ? '😊 楽しい' : mood === 'calm' ? '😌 まったり' : '🤩 わくわく';
-                                ctx.fillText(moodIcon, 400, img ? 650 : 350);
+                                // 気分は常に上部に配置（サインのように）
+                                ctx.fillText(moodIcon, 400, 90);
                             }
 
                             if (message) {
-                                ctx.fillStyle = '#334155'; ctx.font = 'bold 40px sans-serif'; ctx.textAlign = 'center';
+                                ctx.fillStyle = '#334155'; ctx.font = 'bold 44px sans-serif'; ctx.textAlign = 'center';
                                 const wrapText = (t, x, y, mw, lh) => {
                                     const words = t.split(''); let line = '';
                                     for(let n = 0; n < words.length; n++) {
@@ -428,8 +634,23 @@
                                     }
                                     ctx.fillText(line, x, y);
                                 };
-                                wrapText(message, 400, img ? 720 : (mood ? 450 : 400), 700, 50);
+
+                                //Position logic based on textPos
+                                let targetY = 720;
+                                if (textPos === 'top') targetY = 250;
+                                if (textPos === 'middle') targetY = 400;
+
+                                // Shadow for text if overlapping image
+                                if (textPos !== 'bottom') {
+                                    ctx.shadowColor = 'rgba(255,255,255,0.8)'; ctx.shadowBlur = 10;
+                                }
+                                wrapText(message, 400, targetY, 700, 55);
                             }
+
+                            // Quality signature
+                            ctx.fillStyle = 'rgba(225, 29, 72, 0.3)'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'right';
+                            ctx.fillText('BRIDGE PREMIUM MOMENTS', 780, 790);
+
                             resolve(canvas.toDataURL('image/jpeg', 0.9));
                         } catch (e) { reject(e); }
                     };
@@ -439,10 +660,8 @@
                         reader.onload = (e) => {
                             const img = new Image();
                             img.onload = () => drawBody(img);
-                            img.onerror = () => reject(new Error("Image Load Error"));
                             img.src = e.target.result;
                         };
-                        reader.onerror = () => reject(new Error("File Read Error"));
                         reader.readAsDataURL(originalFile);
                     } else { drawBody(); }
                 });
@@ -453,7 +672,7 @@
            LOGIC: FRIENDS ENGINE (友人・遊び)
            ========================================================================== */
         class FriendsEngine {
-            static async applyPopFilter(file = null, comment = "") {
+            static async applyPopFilter(file = null, comment = "", filter = "pop") {
                 return new Promise((resolve, reject) => {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
@@ -461,9 +680,17 @@
 
                     const draw = (img = null) => {
                         try {
-                            // ネオン風グラデーション背景
+                            // Background based on filter
                             const grad = ctx.createLinearGradient(0, 0, 800, 800);
-                            grad.addColorStop(0, '#8B5CF6'); grad.addColorStop(1, '#EC4899');
+                            if (filter === 'bw') {
+                                grad.addColorStop(0, '#1f2937'); grad.addColorStop(1, '#111827');
+                            } else if (filter === 'neon') {
+                                grad.addColorStop(0, '#000000'); grad.addColorStop(1, '#4c1d95');
+                            } else if (filter === 'retro') {
+                                grad.addColorStop(0, '#78350f'); grad.addColorStop(1, '#451a03');
+                            } else {
+                                grad.addColorStop(0, '#8B5CF6'); grad.addColorStop(1, '#EC4899');
+                            }
                             ctx.fillStyle = grad; ctx.fillRect(0, 0, 800, 800);
 
                             if (img) {
@@ -473,20 +700,31 @@
                                 else { sw = img.width; sh = img.width; sx = 0; sy = (img.height - img.width) / 2; }
                                 
                                 ctx.save();
+                                if (filter === 'bw') ctx.filter = 'grayscale(100%) brightness(0.9) contrast(1.2)';
+                                if (filter === 'retro') ctx.filter = 'sepia(80%) saturate(1.5) contrast(1.1)';
+                                if (filter === 'neon') ctx.filter = 'saturate(2) hue-rotate(-20deg) brightness(1.2)';
+                                
                                 ctx.beginPath(); ctx.rect(100, 100, 600, 500); ctx.clip();
                                 ctx.drawImage(img, sx, sy, sw, sh, 100, 100, 600, 500);
                                 ctx.restore();
                                 
-                                // 白枠
-                                ctx.strokeStyle = 'white'; ctx.lineWidth = 10;
+                                // Frame
+                                ctx.strokeStyle = 'white'; ctx.lineWidth = filter === 'neon' ? 4 : 10;
                                 ctx.strokeRect(100, 100, 600, 500);
+                                if (filter === 'neon') {
+                                    ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 15; ctx.globalAlpha = 0.5;
+                                    ctx.strokeRect(95, 95, 610, 510); ctx.globalAlpha = 1;
+                                }
                             }
 
-                            // コメント
+                            // Dynamic Text Styles
                             if (comment) {
-                                ctx.fillStyle = 'white';
-                                ctx.font = 'bold 48px sans-serif';
+                                ctx.fillStyle = filter === 'neon' ? '#fbbf24' : 'white';
+                                ctx.font = `black ${filter === 'retro' ? 'italic ' : ''}48px sans-serif`;
                                 ctx.textAlign = 'center';
+                                if (filter === 'neon') {
+                                    ctx.shadowColor = '#fbbf24'; ctx.shadowBlur = 15;
+                                }
                                 const wrapText = (t, x, y, mw, lh) => {
                                     const words = t.split(''); let line = '';
                                     for(let n = 0; n < words.length; n++) {
@@ -499,10 +737,11 @@
                                 wrapText(comment, 400, img ? 680 : 400, 700, 60);
                             }
 
-                            // 日付 (ポップな斜め配置)
+                            // Date Badge
                             ctx.save();
-                            ctx.translate(700, 100); ctx.rotate(Math.PI / 4);
-                            ctx.fillStyle = '#FDE047'; ctx.font = 'bold 40px sans-serif';
+                            ctx.translate(720, 120); ctx.rotate(Math.PI / 6);
+                            ctx.fillStyle = filter === 'bw' ? '#ffffff' : '#FDE047'; 
+                            ctx.font = '900 32px sans-serif';
                             ctx.fillText(new Date().toLocaleDateString(), 0, 0);
                             ctx.restore();
 
@@ -527,33 +766,39 @@
            UI: FRIENDS PANEL
            ========================================================================== */
         const FriendsPanel = () => {
-            const [draft, setDraft] = useState({ comment: '', mediaFiles: [] });
+            const [draft, setDraft] = useAutoSave('friends', { comment: '', filter: 'pop' });
             const [preview, setPreview] = useState(null);
             const [isGenerating, setIsGenerating] = useState(false);
             const [fileType, setFileType] = useState('image');
 
             const handlePhoto = async (e) => {
-                if(e.target.files[0]) {
-                    const file = e.target.files[0];
-                    const type = file.type.startsWith('video/') ? 'video' : 'image';
+                if(e.target.files.length > 0) {
+                    const files = Array.from(e.target.files);
+                    const type = files[0].type.startsWith('video/') ? 'video' : 'image';
                     setFileType(type);
-                    setPreview(URL.createObjectURL(file));
-                    setDraft({...draft, mediaFiles: [file]});
+                    setPreview(URL.createObjectURL(files[0]));
+                    setDraft({...draft, mediaFiles: files});
                 }
             };
 
             const share = async () => {
-                const file = draft.mediaFiles[0];
-                if(!draft.comment && !file) return;
+                const files = draft.mediaFiles;
+                if(!draft.comment && (!files || files.length === 0)) return;
 
                 setIsGenerating(true);
                 try {
-                    if (fileType === 'video' && file) {
-                        await shareContent(`動画をシェア！`, [file]);
-                    } else if (file || draft.comment) {
-                        const dataUrl = await FriendsEngine.applyPopFilter(file, draft.comment);
+                    let fileToShare = files?.[0];
+                    if (files && files.length > 1) {
+                        const collageUrl = await CollageEngine.createCollage(files);
+                        fileToShare = dataURLtoFile(collageUrl, `friends_collage_${Date.now()}.jpg`);
+                    }
+
+                    if (fileType === 'video' && fileToShare) {
+                        await shareContent(`Checkout this vibe! 🎬`, [fileToShare]);
+                    } else if (fileToShare || draft.comment) {
+                        const dataUrl = await FriendsEngine.applyPopFilter(fileToShare, draft.comment, draft.filter);
                         const processed = dataURLtoFile(dataUrl, `friends_${Date.now()}.jpg`);
-                        await shareContent(`シェア！`, [processed]);
+                        await shareContent(`Share! 💫`, [processed]);
                     }
                 } catch (err) {
                     console.error("Friends share failed:", err);
@@ -563,38 +808,56 @@
             };
 
             return (
-                <div className="bg-white rounded-[3rem] shadow-2xl overflow-hidden border-[10px] border-purple-50 max-w-2xl mx-auto transition-all">
-                    <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-8 text-white relative overflow-hidden">
-                        <div className="absolute -right-8 -top-8 bg-purple-400 w-32 h-32 rounded-full opacity-50"></div>
-                        <h2 className="text-3xl font-black italic flex items-center gap-3 relative z-10">
-                            <Icons.Smile className="w-8 h-8 fill-white" /> FOR FRIENDS
+                <div className="glass rounded-[3rem] overflow-hidden max-w-2xl mx-auto transition-all shadow-2xl">
+                    <div className="bg-gradient-to-br from-purple-600 via-indigo-500 to-cyan-400 p-10 text-white relative">
+                        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-bl-full backdrop-blur-3xl"></div>
+                        <h2 className="text-4xl font-black italic tracking-tight flex items-center gap-4 relative z-10">
+                            <Icons.Zap className="w-10 h-10 fill-yellow-400 stroke-yellow-400" /> CHILL OUT
                         </h2>
+                        <p className="text-xs font-black uppercase tracking-[0.3em] mt-2 opacity-80">Social Experience Hub</p>
                     </div>
-                    <div className="p-8 space-y-6">
-                        <textarea className="w-full bg-gray-50 p-6 rounded-3xl outline-none border-2 border-transparent focus:border-purple-200 font-bold text-lg h-40 resize-none text-purple-900"
-                            placeholder="遊びに行こうよ！ / 何してる？" value={draft.comment} onChange={e => setDraft({...draft, comment: e.target.value})} />
 
-                        <div className="flex gap-4">
+                    <div className="p-10 space-y-8">
+                        {/* Filter Selector */}
+                        <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none">
+                            {['pop', 'retro', 'bw', 'neon'].map(f => (
+                                <button key={f} onClick={() => setDraft({...draft, filter: f})}
+                                    className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all premium-btn ${draft.filter === f ? 'bg-indigo-600 text-white shadow-lg' : 'bg-gray-100 text-gray-400 hover:bg-indigo-50'}`}>
+                                    {f}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="relative">
+                             <textarea className="w-full bg-purple-50/50 p-8 rounded-[2.5rem] outline-none border-2 border-transparent focus:border-purple-300 font-bold text-xl h-48 resize-none text-indigo-900 shadow-inner"
+                                placeholder="What's the plan? ✨" value={draft.comment} onChange={e => setDraft({...draft, comment: e.target.value})} />
+                             <div className="absolute -bottom-4 right-8 bg-black text-white px-6 py-2 rounded-full text-xs font-black rotate-2 shadow-xl">POPPIN'!</div>
+                        </div>
+
+                        <div className="flex gap-6 items-center">
                              <label className="flex-1">
-                                <div className="h-48 bg-gray-50 rounded-[2rem] border-4 border-dashed border-gray-200 flex flex-col items-center justify-center hover:bg-purple-50 hover:border-purple-200 transition-all cursor-pointer">
-                                    <Icons.Camera className="w-12 h-12 text-gray-300" />
-                                    <p className="text-[10px] font-black text-gray-400 mt-2 uppercase tracking-widest">Add Photo / Video</p>
+                                <div className="h-48 glass bg-white/40 rounded-[2.5rem] border-4 border-dashed border-indigo-200 flex flex-col items-center justify-center hover:bg-indigo-50 hover:border-indigo-300 transition-all cursor-pointer premium-btn group">
+                                    <Icons.Camera className="w-12 h-12 text-indigo-200 group-hover:text-indigo-400 transition-colors" />
+                                    <p className="text-[10px] font-black text-indigo-300 mt-2 uppercase tracking-widest">Snap Moment</p>
                                 </div>
-                                <input type="file" className="hidden" accept="image/*,video/*" onChange={handlePhoto} />
+                                <input type="file" className="hidden" accept="image/*,video/*" multiple onChange={handlePhoto} />
                              </label>
                              {preview && (
-                                <div className="flex-1 rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white transform rotate-3 hover:rotate-0 transition-transform duration-500 bg-black">
-                                    {fileType === 'image' 
-                                        ? <img src={preview} className="w-full h-full object-cover" />
-                                        : <video src={preview} className="w-full h-full object-cover" muted />
-                                    }
+                                <div className="flex-1 h-48 rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white transform -rotate-2 relative bg-slate-900 group">
+                                    {fileType === 'image' ? <img src={preview} className="w-full h-full object-cover" /> : <video src={preview} className="w-full h-full object-cover" muted />}
+                                    {draft.mediaFiles?.length > 1 && (
+                                        <div className="absolute top-2 right-2 bg-indigo-600 text-white text-[10px] font-black w-7 h-7 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                                            +{draft.mediaFiles.length - 1}
+                                        </div>
+                                    )}
+                                    <div className={`absolute inset-0 pointer-events-none opacity-30 mix-blend-overlay ${draft.filter === 'retro' ? 'bg-orange-900' : draft.filter === 'bw' ? 'grayscale' : draft.filter === 'neon' ? 'bg-purple-900' : ''}`}></div>
                                 </div>
                              )}
                         </div>
 
-                        <button onClick={share} disabled={isGenerating || (!draft.comment && !draft.mediaFiles[0])}
-                            className={`w-full py-6 bg-black text-white rounded-[2rem] font-black text-2xl hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-3 disabled:opacity-30`}>
-                            {isGenerating ? '準備中...' : <React.Fragment><Icons.Send className="w-8 h-8" /> SHARE!</React.Fragment>}
+                        <button onClick={share} disabled={isGenerating || (!draft.comment && !draft.mediaFiles?.[0])}
+                            className={`w-full py-7 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-[2.5rem] font-black text-2xl premium-btn shadow-[0_15px_40px_rgba(79,70,229,0.4)] flex items-center justify-center gap-4`}>
+                            {isGenerating ? 'Vibing...' : <React.Fragment><Icons.Send className="w-8 h-8" /> SHARE VIBES</React.Fragment>}
                         </button>
                     </div>
                 </div>
@@ -605,66 +868,91 @@
            MAIN APP: ALLつなぐ BRIDGE
            ========================================================================== */
         const App = () => {
-            const [mode, setMode] = useState('family'); // 'family' | 'corporate' | 'friends'
+            const [mode, setMode] = useState('family'); 
+
+            // Dynamic background based on mode
+            const meshColors = useMemo(() => {
+                if (mode === 'family') return ['#fda4af', '#fecdd3', '#fff1f2', '#ffe4e6'];
+                if (mode === 'corporate') return ['#1e293b', '#334155', '#475569', '#64748b'];
+                return ['#a78bfa', '#818cf8', '#67e8f9', '#cffafe'];
+            }, [mode]);
 
             return (
-                <div className="min-h-screen flex flex-col font-ud transition-colors duration-700">
-                    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm backdrop-blur-md bg-white/90">
-                        <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className={`p-3 rounded-2xl transition-all duration-500 ${mode === 'family' ? 'bg-pink-100 rotate-0' : mode === 'corporate' ? 'bg-slate-800 rotate-90' : 'bg-cyan-100 -rotate-12'}`}>
-                                    <Icons.Command className={`w-8 h-8 ${mode === 'family' ? 'text-pink-500' : mode === 'corporate' ? 'text-white' : 'text-cyan-500'}`} />
-                                </div>
-                                <div>
-                                    <h1 className="text-xl font-black tracking-tighter text-gray-800">ALLつなぐ BRIDGE</h1>
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase leading-none tracking-widest">Connectivity Hub</p>
-                                </div>
+                <div className="min-h-screen flex flex-col transition-all duration-1000">
+                    {/* Mesh Gradient Foundation */}
+                    <div className="bg-mesh">
+                        {meshColors.map((c, i) => (
+                            <div key={i} style={{ 
+                                backgroundColor: c, 
+                                left: `${(i % 2) * 50}%`, 
+                                top: `${Math.floor(i / 2) * 50}%`,
+                                animationDelay: `${i * 2}s`,
+                                animationDuration: `${20 + i * 5}s`
+                            }}></div>
+                        ))}
+                    </div>
+
+                    <nav className="glass sticky top-0 z-50 px-6 h-24 flex items-center justify-between border-b border-white/20">
+                        <div className="flex items-center gap-4">
+                            <div className={`p-4 rounded-[1.5rem] transition-all duration-700 shadow-2xl ${mode === 'family' ? 'bg-pink-500 rotate-0' : mode === 'corporate' ? 'bg-slate-900 rotate-[360deg]' : 'bg-indigo-600 -rotate-12'}`}>
+                                <Icons.Zap className="w-8 h-8 text-white" />
                             </div>
-                            
-                            <div className="hidden md:flex bg-gray-100 p-1.5 rounded-2xl gap-1">
-                                <button onClick={() => setMode('family')} className={`px-8 py-2.5 rounded-xl text-sm font-black transition-all ${mode === 'family' ? 'bg-white text-pink-600 shadow-lg' : 'text-gray-400 hover:text-gray-600'}`}>家族</button>
-                                <button onClick={() => setMode('corporate')} className={`px-8 py-2.5 rounded-xl text-sm font-black transition-all ${mode === 'corporate' ? 'bg-slate-800 text-white shadow-lg' : 'text-gray-400 hover:text-gray-600'}`}>業務用</button>
-                                <button onClick={() => setMode('friends')} className={`px-8 py-2.5 rounded-xl text-sm font-black transition-all ${mode === 'friends' ? 'bg-white text-cyan-600 shadow-lg' : 'text-gray-400 hover:text-gray-600'}`}>友人</button>
+                            <div className="hidden sm:block">
+                                <h1 className="text-2xl font-black tracking-tighter text-slate-900 uppercase">Bridge Elite</h1>
+                                <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] leading-none">v3.0 Premium Hub</p>
                             </div>
+                        </div>
+                        
+                        <div className="flex bg-black/5 backdrop-blur-xl p-1.5 rounded-[2rem] border border-white/40 shadow-xl">
+                            {['family', 'corporate', 'friends'].map(m => (
+                                <button key={m} onClick={() => setMode(m)} 
+                                    className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${mode === m ? 'bg-white text-black shadow-lg scale-105' : 'text-slate-500 hover:text-slate-800'}`}>
+                                    {m}
+                                </button>
+                            ))}
                         </div>
                     </nav>
 
-                    <main className={`flex-grow p-6 md:p-12 transition-colors duration-1000 ${mode === 'family' ? 'bg-[#FFF5F7]' : mode === 'corporate' ? 'bg-slate-900' : 'bg-[#F0FDFF]'}`}>
+                    <main className="flex-grow p-6 md:p-12">
                         <div className="max-w-4xl mx-auto">
-                            <div className="mb-12 text-center transform transition-all">
-                                <h3 className={`text-4xl md:text-6xl font-black tracking-tighter mb-4 ${mode === 'corporate' ? 'text-white' : 'text-gray-900'}`}>
-                                    {mode === 'family' ? 'Home Sweet Home' : mode === 'corporate' ? 'Business Reporting' : 'Party & Planning'}
+                            <div className="mb-16 text-center">
+                                <h3 className="text-6xl md:text-8xl font-black tracking-tighter mb-4 text-slate-900 mix-blend-multiply opacity-10 select-none absolute left-0 right-0 top-32 pointer-events-none uppercase">
+                                    {mode}
                                 </h3>
-                                <p className={`text-lg font-bold italic ${mode === 'corporate' ? 'text-slate-500' : mode === 'family' ? 'text-pink-400' : 'text-cyan-500'}`}>
-                                    {mode === 'family' ? '今日の感謝と愛を、いつもの家族チャットへ。' : mode === 'corporate' ? '確実な証拠と正確な情報。一秒でも早く司令塔へ。' : '最高にポップな思い出。集まりの計画をシームレスに。'}
-                                </p>
+                                <div className="relative z-10">
+                                    <h3 className="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 mb-4">
+                                        {mode === 'family' ? 'Connect with Love' : mode === 'corporate' ? 'Professional Edge' : 'Live the Vibe'}
+                                    </h3>
+                                    <p className="text-lg font-bold italic text-slate-600 max-w-xl mx-auto">
+                                        {mode === 'family' ? '家。一番大切な場所へ、最高の思い出を。' : mode === 'corporate' ? '一分一秒を争う現場の「真実」を加速させる。' : '最高にイケてる瞬間を、最高のカタチでシェア。'}
+                                    </p>
+                                </div>
                             </div>
 
-                            <div className="transition-all duration-500">
-                                {mode === 'family' && <FamilyPanel />}
-                                {mode === 'corporate' && <CorporatePanel />}
-                                {mode === 'friends' && <FriendsPanel />}
+                            <div className="relative min-h-[600px]">
+                                {mode === 'family' && (
+                                    <div className="animate-in fade-in slide-in-from-bottom-5 duration-700">
+                                        <FamilyPanel />
+                                    </div>
+                                )}
+                                {mode === 'corporate' && (
+                                    <div className="animate-in fade-in slide-in-from-bottom-5 duration-700">
+                                        <CorporatePanel />
+                                    </div>
+                                )}
+                                {mode === 'friends' && (
+                                    <div className="animate-in fade-in slide-in-from-bottom-5 duration-700">
+                                        <FriendsPanel />
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </main>
 
-                    <div className="md:hidden fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] bg-white/90 backdrop-blur-2xl border border-white/50 shadow-[0_20px_50px_rgba(0,0,0,0.2)] rounded-[2.5rem] p-2 flex gap-1 z-50">
-                        <button onClick={() => setMode('family')} className={`flex-1 py-4 rounded-[2rem] flex flex-col items-center gap-1 transition-all ${mode === 'family' ? 'bg-pink-500 text-white shadow-lg' : 'text-gray-400'}`}>
-                            <Icons.Home className="w-5 h-5" />
-                            <span className="text-[10px] font-black mt-1">家族</span>
-                        </button>
-                        <button onClick={() => setMode('corporate')} className={`flex-1 py-4 rounded-[2rem] flex flex-col items-center gap-1 transition-all ${mode === 'corporate' ? 'bg-slate-800 text-white shadow-lg' : 'text-gray-400'}`}>
-                            <Icons.Briefcase className="w-5 h-5" />
-                            <span className="text-[10px] font-black mt-1">業務</span>
-                        </button>
-                        <button onClick={() => setMode('friends')} className={`flex-1 py-4 rounded-[2rem] flex flex-col items-center gap-1 transition-all ${mode === 'friends' ? 'bg-cyan-500 text-white shadow-lg' : 'text-gray-400'}`}>
-                            <Icons.Smile className="w-5 h-5" />
-                            <span className="text-[10px] font-black mt-1">友人</span>
-                        </button>
-                    </div>
-
-                    <footer className={`py-10 text-center border-t transition-colors ${mode === 'corporate' ? 'bg-slate-900 border-slate-800 text-slate-600' : 'bg-white/50 border-gray-100 text-gray-400'}`}>
-                         <p className="text-[10px] font-mono tracking-[0.3em] uppercase font-bold">ALL つなぐ BRIDGE v2.1 | POWERED BY MUSUBI SYSTEM</p>
+                    <footer className="py-12 glass-dark text-center border-t border-white/10 mt-20">
+                         <p className="text-[10px] font-black tracking-[0.5em] uppercase text-slate-400">
+                             ALL つなぐ BRIDGE v3.0 | NEXT GEN CONNECTIVITY
+                         </p>
                     </footer>
                 </div>
             );
