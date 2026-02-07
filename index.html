@@ -58,18 +58,19 @@
 
         const shareContent = async (text, files = []) => {
             try {
-                // 画像がある場合は画像を優先して共有（Android版LINE等の制約対策）
-                if (files && files.length > 0 && navigator.canShare && navigator.canShare({ files })) {
+                const canShareFiles = files && files.length > 0 && navigator.canShare && navigator.canShare({ files });
+                if (canShareFiles) {
                     await navigator.share({
                         files: files,
-                        title: 'BRIDGE Share'
+                        title: 'BRIDGE'
                     });
                 } else if (navigator.share) {
                     await navigator.share({ text });
                 } else {
-                    window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
+                    throw new Error('Web Share API not available');
                 }
             } catch (err) {
+                // 共有がキャンセルされた場合(AbortError)以外はLINEスキームにフォールバック
                 if (err.name !== 'AbortError') {
                     window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
                 }
