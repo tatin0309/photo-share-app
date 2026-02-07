@@ -133,26 +133,21 @@
             };
 
             const simulateSend = async () => {
-                if(!draft.message) return;
+                if(!draft.message && draft.mediaFiles.length === 0) return;
                 setIsGenerating(true);
                 try {
-                    // メッセージも気分も写真も何もない場合は何もしない
-                    if (!draft.message && !draft.mood && draft.mediaFiles.length === 0) return;
-
                     let file;
                     if (draft.message || draft.mood) {
-                        // テキストまたは気分がある場合はカード生成
                         const dataUrl = await FamilyEngine.generateMessageCard(draft.message, draft.mood, draft.mediaFiles[0]);
                         file = dataURLtoFile(dataUrl, `family_${Date.now()}.jpg`);
                     } else {
-                        // テキストも気分もなく、写真のみの場合は元ファイルをそのまま使用
                         file = draft.mediaFiles[0];
                     }
 
                     const moodText = draft.mood ? (draft.mood === 'happy' ? '😊 楽しい' : draft.mood === 'calm' ? '😌 まったり' : '🤩 わくわく') : '';
-                    shareContent(`【家族連絡】 ${moodText}`, file ? [file] : []);
+                    await shareContent(`【家族連絡】 ${moodText}`, file ? [file] : []);
                 } catch (err) {
-                    console.error(err);
+                    console.error("Share failed:", err);
                 } finally {
                     setIsGenerating(false);
                 }
@@ -374,78 +369,57 @@
            ========================================================================== */
         class FamilyEngine {
             static async generateMessageCard(message, mood, originalFile) {
-                return new Promise((resolve) => {
+                return new Promise((resolve, reject) => {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     canvas.width = 800; canvas.height = 800;
 
-                    // 背景グラデーション
-                    const grad = ctx.createLinearGradient(0, 0, 0, 800);
-                    grad.addColorStop(0, '#FFF5F7'); grad.addColorStop(1, '#FFE4E8');
-                    ctx.fillStyle = grad; ctx.fillRect(0, 0, 800, 800);
-
                     const drawBody = (img = null) => {
-                        if (img) {
-                            const size = 500;
-                            const targetX = 150;
-                            const targetY = 80;
+                        try {
+                            const grad = ctx.createLinearGradient(0, 0, 0, 800);
+                            grad.addColorStop(0, '#FFF5F7'); grad.addColorStop(1, '#FFE4E8');
+                            ctx.fillStyle = grad; ctx.fillRect(0, 0, 800, 800);
+
+                            if (img) {
+                                const size = 500;
+                                const tx = 150, ty = 80;
+                                let sw, sh, sx, sy;
+                                const ratio = img.width / img.height;
+                                if (ratio > 1) { sh = img.height; sw = img.height; sx = (img.width - img.height) / 2; sy = 0; }
+                                else { sw = img.width; sh = img.width; sx = 0; sy = (img.height - img.width) / 2; }
+                                
+                                ctx.save();
+                                // roundRect の代わりに四角形で描画（互換性重視）
+                                ctx.beginPath();
+                                ctx.rect(tx, ty, size, size);
+                                ctx.clip();
+                                ctx.drawImage(img, sx, sy, sw, sh, tx, ty, size, size);
+                                ctx.restore();
+                            }
                             
-                            // アスペクト比維持（object-fit: cover 相当）の計算
-                            let sw, sh, sx, sy;
-                            const imgRatio = img.width / img.height;
-                            if (imgRatio > 1) { // 横長
-                                sh = img.height;
-                                sw = img.height;
-                                sx = (img.width - img.height) / 2;
-                                sy = 0;
-                            } else { // 縦長
-                                sw = img.width;
-                                sh = img.width;
-                                sx = 0;
-                                sy = (img.height - img.width) / 2;
+                            if (mood) {
+                                ctx.fillStyle = '#E11D48';
+                                ctx.font = 'bold 60px sans-serif';
+                                ctx.textAlign = 'center';
+                                const moodIcon = mood === 'happy' ? '😊 楽しい' : mood === 'calm' ? '😌 まったり' : '🤩 わくわく';
+                                ctx.fillText(moodIcon, 400, img ? 650 : 350);
                             }
 
-                            ctx.save();
-                            ctx.beginPath();
-                            ctx.roundRect(targetX, targetY, size, size, 40);
-                            ctx.clip();
-                            // 切り抜き描画
-                            ctx.drawImage(img, sx, sy, sw, sh, targetX, targetY, size, size);
-                            ctx.restore();
-                        }
-                        
-                        ctx.fillStyle = '#E11D48';
-                        ctx.font = 'bold 60px sans-serif';
-                        ctx.textAlign = 'center';
-                        
-                        if (mood) {
-                            const moodIcon = mood === 'happy' ? '😊 楽しい' : mood === 'calm' ? '😌 まったり' : '🤩 わくわく';
-                            ctx.fillText(moodIcon, 400, img ? 650 : 350);
-                        }
-
-                        if (message) {
-                            ctx.fillStyle = '#334155';
-                            ctx.font = 'bold 40px sans-serif';
-                            const wrapText = (text, x, y, maxWidth, lineHeight) => {
-                                const words = text.split('');
-                                let line = '';
-                                for(let n = 0; n < words.length; n++) {
-                                    let testLine = line + words[n];
-                                    if (ctx.measureText(testLine).width > maxWidth && n > 0) {
-                                        ctx.fillText(line, x, y);
-                                        line = words[n];
-                                        y += lineHeight;
-                                    } else {
-                                        line = testLine;
+                            if (message) {
+                                ctx.fillStyle = '#334155'; ctx.font = 'bold 40px sans-serif'; ctx.textAlign = 'center';
+                                const wrapText = (t, x, y, mw, lh) => {
+                                    const words = t.split(''); let line = '';
+                                    for(let n = 0; n < words.length; n++) {
+                                        let test = line + words[n];
+                                        if (ctx.measureText(test).width > mw && n > 0) { ctx.fillText(line, x, y); line = words[n]; y += lh; }
+                                        else line = test;
                                     }
-                                }
-                                ctx.fillText(line, x, y);
-                            };
-                            let textY = img ? 720 : 450;
-                            if (!mood && !img) textY = 400; // 気分も画像もない場合は中央寄りに
-                            wrapText(message, 400, textY, 700, 50);
-                        }
-                        resolve(canvas.toDataURL('image/jpeg', 0.9));
+                                    ctx.fillText(line, x, y);
+                                };
+                                wrapText(message, 400, img ? 720 : (mood ? 450 : 400), 700, 50);
+                            }
+                            resolve(canvas.toDataURL('image/jpeg', 0.9));
+                        } catch (e) { reject(e); }
                     };
 
                     if (originalFile) {
@@ -453,12 +427,12 @@
                         reader.onload = (e) => {
                             const img = new Image();
                             img.onload = () => drawBody(img);
+                            img.onerror = () => reject(new Error("Image Load Error"));
                             img.src = e.target.result;
                         };
+                        reader.onerror = () => reject(new Error("File Read Error"));
                         reader.readAsDataURL(originalFile);
-                    } else {
-                        drawBody();
-                    }
+                    } else { drawBody(); }
                 });
             }
         }
