@@ -121,20 +121,41 @@
         const FamilyPanel = () => {
             const [draft, setDraft] = useState({ message: '', mood: 'happy', mediaFiles: [] });
             const [previewUrl, setPreviewUrl] = useState(null);
+            const [processedFile, setProcessedFile] = useState(null);
+            const [isGenerating, setIsGenerating] = useState(false);
 
             const handleFileChange = (e) => {
                 if (e.target.files && e.target.files[0]) {
-                    const url = URL.createObjectURL(e.target.files[0]);
-                    setPreviewUrl(url);
-                    setDraft({...draft, mediaFiles: [e.target.files[0]]});
+                    const file = e.target.files[0];
+                    setPreviewUrl(URL.createObjectURL(file));
+                    setDraft({...draft, mediaFiles: [file]});
                 }
             };
 
-            const simulateSend = () => {
+            const simulateSend = async () => {
                 if(!draft.message) return;
-                const moodIcon = draft.mood === 'happy' ? '😊 楽しい' : draft.mood === 'calm' ? '😌 まったり' : '🤩 わくわく';
-                const text = `【家族連絡】\n現在の気分: ${moodIcon}\n\n${draft.message}`;
-                shareContent(text, draft.mediaFiles);
+                setIsGenerating(true);
+                try {
+                    // メッセージも気分も写真も何もない場合は何もしない
+                    if (!draft.message && !draft.mood && draft.mediaFiles.length === 0) return;
+
+                    let file;
+                    if (draft.message || draft.mood) {
+                        // テキストまたは気分がある場合はカード生成
+                        const dataUrl = await FamilyEngine.generateMessageCard(draft.message, draft.mood, draft.mediaFiles[0]);
+                        file = dataURLtoFile(dataUrl, `family_${Date.now()}.jpg`);
+                    } else {
+                        // テキストも気分もなく、写真のみの場合は元ファイルをそのまま使用
+                        file = draft.mediaFiles[0];
+                    }
+
+                    const moodText = draft.mood ? (draft.mood === 'happy' ? '😊 楽しい' : draft.mood === 'calm' ? '😌 まったり' : '🤩 わくわく') : '';
+                    shareContent(`【家族連絡】 ${moodText}`, file ? [file] : []);
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    setIsGenerating(false);
+                }
             };
 
             return (
@@ -146,11 +167,11 @@
                         <p className="text-sm opacity-90 mt-1">大切な家族へ、今の気持ちを届けます。</p>
                     </div>
                     <div className="p-6 space-y-6">
-                        <div className="flex gap-4">
-                            {['happy', 'calm', 'excited'].map(mood => (
-                                <button key={mood} onClick={() => setDraft({...draft, mood})} 
-                                    className={`flex-1 py-3 rounded-xl font-bold transition-all ${draft.mood === mood ? 'bg-pink-500 text-white shadow-lg' : 'bg-gray-100 text-gray-500'}`}>
-                                    {mood === 'happy' ? '😊 楽しい' : mood === 'calm' ? '😌 まったり' : '🤩 わくわく'}
+                        <div className="flex gap-2">
+                            {['none', 'happy', 'calm', 'excited'].map(mood => (
+                                <button key={mood} onClick={() => setDraft({...draft, mood: mood === 'none' ? null : mood})} 
+                                    className={`flex-1 py-3 rounded-xl font-bold transition-all text-[10px] md:text-sm ${((mood === 'none' && !draft.mood) || draft.mood === mood) ? 'bg-pink-500 text-white shadow-lg' : 'bg-gray-100 text-gray-500'}`}>
+                                    {mood === 'none' ? '😶 なし' : mood === 'happy' ? '😊 楽しい' : mood === 'calm' ? '😌 まったり' : '🤩 わくわく'}
                                 </button>
                             ))}
                         </div>
@@ -166,9 +187,9 @@
                             </label>
                             {previewUrl && <img src={previewUrl} className="w-16 h-16 rounded-lg object-cover border-2 border-pink-200" />}
                         </div>
-                        <button onClick={simulateSend} disabled={!draft.message}
-                            className="w-full py-4 bg-pink-500 hover:bg-pink-600 disabled:bg-gray-300 text-white rounded-2xl font-bold shadow-lg transition-all flex items-center justify-center gap-2">
-                            <Icons.Send className="w-5 h-5" /> LINEでみんなに送る
+                        <button onClick={simulateSend} disabled={isGenerating || (!draft.message && !draft.mood && draft.mediaFiles.length === 0)}
+                            className={`w-full py-4 ${isGenerating ? 'bg-gray-400' : 'bg-pink-500 hover:bg-pink-600'} text-white rounded-2xl font-bold shadow-lg transition-all flex items-center justify-center gap-2`}>
+                            {isGenerating ? '準備中...' : <React.Fragment><Icons.Send className="w-5 h-5" /> LINEでみんなに送る</React.Fragment>}
                         </button>
                     </div>
                 </div>
@@ -347,6 +368,81 @@
                 </div>
             );
         };
+
+        /* ==========================================================================
+           LOGIC: FAMILY ENGINE (家族連絡)
+           ========================================================================== */
+        class FamilyEngine {
+            static async generateMessageCard(message, mood, originalFile) {
+                return new Promise((resolve) => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 800; canvas.height = 800;
+
+                    // 背景グラデーション
+                    const grad = ctx.createLinearGradient(0, 0, 0, 800);
+                    grad.addColorStop(0, '#FFF5F7'); grad.addColorStop(1, '#FFE4E8');
+                    ctx.fillStyle = grad; ctx.fillRect(0, 0, 800, 800);
+
+                    const drawBody = (img = null) => {
+                        if (img) {
+                            const size = 500;
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.roundRect(150, 80, size, size, 40);
+                            ctx.clip();
+                            ctx.drawImage(img, 150, 80, size, size);
+                            ctx.restore();
+                        }
+                        
+                        ctx.fillStyle = '#E11D48';
+                        ctx.font = 'bold 60px sans-serif';
+                        ctx.textAlign = 'center';
+                        
+                        if (mood) {
+                            const moodIcon = mood === 'happy' ? '😊 楽しい' : mood === 'calm' ? '😌 まったり' : '🤩 わくわく';
+                            ctx.fillText(moodIcon, 400, img ? 650 : 350);
+                        }
+
+                        if (message) {
+                            ctx.fillStyle = '#334155';
+                            ctx.font = 'bold 40px sans-serif';
+                            const wrapText = (text, x, y, maxWidth, lineHeight) => {
+                                const words = text.split('');
+                                let line = '';
+                                for(let n = 0; n < words.length; n++) {
+                                    let testLine = line + words[n];
+                                    if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+                                        ctx.fillText(line, x, y);
+                                        line = words[n];
+                                        y += lineHeight;
+                                    } else {
+                                        line = testLine;
+                                    }
+                                }
+                                ctx.fillText(line, x, y);
+                            };
+                            let textY = img ? 720 : 450;
+                            if (!mood && !img) textY = 400; // 気分も画像もない場合は中央寄りに
+                            wrapText(message, 400, textY, 700, 50);
+                        }
+                        resolve(canvas.toDataURL('image/jpeg', 0.9));
+                    };
+
+                    if (originalFile) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = new Image();
+                            img.onload = () => drawBody(img);
+                            img.src = e.target.result;
+                        };
+                        reader.readAsDataURL(originalFile);
+                    } else {
+                        drawBody();
+                    }
+                });
+            }
+        }
 
         /* ==========================================================================
            LOGIC: FRIENDS ENGINE (友人・遊び)
