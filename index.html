@@ -46,6 +46,36 @@
     <script type="text/babel">
         const { useState, useEffect, useRef, useMemo } = React;
 
+        // --- UTILS: SHARE & DATA CONVERSION ---
+        const dataURLtoFile = (dataurl, filename) => {
+            const arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while(n--) u8arr[n] = bstr.charCodeAt(n);
+            return new File([u8arr], filename, {type:mime});
+        };
+
+        const shareContent = async (text, files = []) => {
+            try {
+                // 画像がある場合は画像を優先して共有（Android版LINE等の制約対策）
+                if (files && files.length > 0 && navigator.canShare && navigator.canShare({ files })) {
+                    await navigator.share({
+                        files: files,
+                        title: 'BRIDGE Share'
+                    });
+                } else if (navigator.share) {
+                    await navigator.share({ text });
+                } else {
+                    window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
+                }
+            }
+        };
+
         // --- LUCIDE ICONS WRAPPER ---
         const Icons = {
             Home: (props) => (
@@ -92,10 +122,8 @@
             const simulateSend = () => {
                 if(!draft.message) return;
                 const moodIcon = draft.mood === 'happy' ? '😊 楽しい' : draft.mood === 'calm' ? '😌 まったり' : '🤩 わくわく';
-                const text = encodeURIComponent(`【家族連絡】\n現在の気分: ${moodIcon}\n\n${draft.message}`);
-                
-                // LINEアプリを呼び出すスキーム
-                window.location.href = `https://line.me/R/msg/text/?${text}`;
+                const text = `【家族連絡】\n現在の気分: ${moodIcon}\n\n${draft.message}`;
+                shareContent(text, draft.mediaFiles);
             };
 
             return (
@@ -189,6 +217,7 @@
             const [draft, setDraft] = useState({ title: '', description: '', urgency: 'medium', location: '東京都...' });
             const [isProcessing, setIsProcessing] = useState(false);
             const [processedUrl, setProcessedUrl] = useState(null);
+            const [processedFile, setProcessedFile] = useState(null);
             const [fileType, setFileType] = useState('image'); // 'image' | 'video'
             const [gps, setGps] = useState({ lat: 35.6812, lng: 139.7671, speed: 0 });
 
@@ -210,10 +239,12 @@
                             setFileType('image');
                             const url = await CorporateEngine.processEvidencePhoto(file, { ...gps, time: new Date() });
                             setProcessedUrl(url);
+                            setProcessedFile(dataURLtoFile(url, "report_" + Date.now() + ".jpg"));
                         } else if (file.type.startsWith('video/')) {
                             setFileType('video');
                             const url = URL.createObjectURL(file);
                             setProcessedUrl(url);
+                            setProcessedFile(file);
                         }
                     } catch (err) {
                         console.error(err);
@@ -230,11 +261,10 @@
                 const timeStr = `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
                 
                 const mediaNote = fileType === 'image' 
-                    ? `※証拠画像内にデータ(日時/場所/速度)が焼き込み済みです。`
-                    : `※【動画証拠】(動画にはデータが焼き込まれないため、以下を参照)\n発生地点: LAT ${gps.lat.toFixed(5)}, LNG ${gps.lng.toFixed(5)}\n記録速度: ${gps.speed} km/h\n記録時刻: ${timeStr}`;
+                    ? `※証拠画像内にデータ焼き込み済み。`
+                    : `※【動画証拠】発生地点: LAT ${gps.lat.toFixed(5)}, LNG ${gps.lng.toFixed(5)}, 速度: ${gps.speed} km/h`;
 
-                const text = encodeURIComponent(
-                    `${urgencyEmoji} 現場報告\n` +
+                const text = `${urgencyEmoji} 現場報告\n` +
                     `------------------\n` +
                     `件名: ${draft.title}\n` +
                     `内容: ${draft.description}\n` +
@@ -242,11 +272,9 @@
                     `時刻: ${timeStr}\n` +
                     `速度: ${gps.speed} km/h\n` +
                     `------------------\n` +
-                    `${mediaNote}\n\n` +
-                    `※メディアはブラウザからLINEへ添付してください。`
-                );
+                    `${mediaNote}`;
                 
-                window.location.href = `https://line.me/R/msg/text/?${text}`;
+                shareContent(text, processedFile ? [processedFile] : []);
             };
 
             return (
@@ -352,26 +380,26 @@
         const FriendsPanel = () => {
             const [draft, setDraft] = useState({ title: '', budget: '', type: 'drink' });
             const [preview, setPreview] = useState(null);
+            const [processedFile, setProcessedFile] = useState(null);
 
             const handlePhoto = async (e) => {
                 if(e.target.files[0]) {
-                    const url = await FriendsEngine.applyPopFilter(e.target.files[0]);
+                    const file = e.target.files[0];
+                    const url = await FriendsEngine.applyPopFilter(file);
                     setPreview(url);
+                    setProcessedFile(dataURLtoFile(url, `party_${Date.now()}.jpg`));
                 }
             };
 
             const share = () => {
                 if(!draft.title) return;
                 const typeIcon = draft.type === 'drink' ? '🍻 飲み会' : draft.type === 'trip' ? '✈️ 旅行' : '🎮 ゲーム';
-                const text = encodeURIComponent(
-                    `【遊びの計画】${typeIcon}\n` +
+                const text = `【遊びの計画】${typeIcon}\n` +
                     `イベント: ${draft.title}\n` +
                     `予算目安: ${draft.budget}円\n\n` +
-                    `一緒にどう？🖐️`
-                );
+                    `一緒にどう？🖐️`;
                 
-                // LINEアプリを呼び出すスキーム
-                window.location.href = `https://line.me/R/msg/text/?${text}`;
+                shareContent(text, processedFile ? [processedFile] : []);
             };
 
             return (
