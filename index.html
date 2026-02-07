@@ -32,14 +32,17 @@
             background: #f0f2f5;
             overflow-x: hidden;
             min-height: 100vh;
+            width: 100%;
+            position: relative;
         }
 
         /* Solid Premium Backgrounds */
         .bg-solid {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             transition: background 1s ease-in-out;
+            pointer-events: none;
         }
 
         .bg-solid.mode-family { background-color: #fdf2f8; }
@@ -54,6 +57,7 @@
             background-size: 32px 32px;
             z-index: -1;
             opacity: 0.5;
+            pointer-events: none;
         }
         .mode-corporate .grid-overlay {
             background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
