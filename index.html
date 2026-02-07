@@ -885,24 +885,26 @@
                     <div className={`bg-solid mode-${mode}`}></div>
                     <div className="grid-overlay"></div>
 
-                    <nav className="glass sticky top-0 z-50 px-6 h-24 flex items-center justify-between border-b border-white/20">
-                        <div className="flex items-center gap-4">
-                            <div className={`p-4 rounded-[1.5rem] transition-all duration-700 shadow-2xl ${mode === 'family' ? 'bg-pink-500 rotate-0' : mode === 'corporate' ? 'bg-slate-900 rotate-[360deg]' : 'bg-indigo-600 -rotate-12'}`}>
-                                <Icons.Zap className="w-8 h-8 text-white" />
+                    <nav className="glass sticky top-0 z-50 px-4 h-24 flex items-center justify-between border-b border-white/20">
+                        <div className="flex items-center gap-3 shrink-0">
+                            <div className={`p-3.5 rounded-[1.2rem] transition-all duration-700 shadow-2xl ${mode === 'family' ? 'bg-pink-500 rotate-0' : mode === 'corporate' ? 'bg-slate-900 rotate-[360deg]' : 'bg-indigo-600 -rotate-12'}`}>
+                                <Icons.Zap className="w-6 h-6 text-white" />
                             </div>
-                            <div className="hidden sm:block">
-                                <h1 className="text-2xl font-black tracking-tighter text-slate-900 uppercase">Bridge Elite</h1>
-                                <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] leading-none">v3.0 Premium Hub</p>
+                            <div className="hidden xs:block">
+                                <h1 className="text-xl font-black tracking-tighter text-slate-900 uppercase leading-none">Bridge</h1>
+                                <p className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] mt-1">v3.0 Premium</p>
                             </div>
                         </div>
                         
-                        <div className="flex bg-black/5 backdrop-blur-xl p-1.5 rounded-[2rem] border border-white/40 shadow-xl">
-                            {['family', 'corporate', 'friends'].map(m => (
-                                <button key={m} onClick={() => setMode(m)} 
-                                    className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${mode === m ? 'bg-white text-black shadow-lg scale-105' : 'text-slate-500 hover:text-slate-800'}`}>
-                                    {m}
-                                </button>
-                            ))}
+                        <div className="flex bg-black/5 backdrop-blur-xl p-1.5 rounded-[2rem] border border-white/40 shadow-inner overflow-x-auto overflow-y-hidden hide-scrollbar snap-x touch-pan-x max-w-[calc(100%-60px)] ml-auto">
+                            <div className="flex gap-1">
+                                {['family', 'corporate', 'friends'].map(m => (
+                                    <button key={m} onClick={() => setMode(m)} 
+                                        className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all snap-start shrink-0 ${mode === m ? 'bg-white text-black shadow-lg scale-105' : 'text-slate-500 hover:text-slate-800'}`}>
+                                        {m}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </nav>
 
