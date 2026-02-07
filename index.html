@@ -453,35 +453,72 @@
            LOGIC: FRIENDS ENGINE (友人・遊び)
            ========================================================================== */
         class FriendsEngine {
-            static async applyPopFilter(file) {
-                return new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            const canvas = document.createElement('canvas');
-                            const ctx = canvas.getContext('2d');
-                            const size = Math.min(img.width, img.height);
-                            canvas.width = canvas.height = size;
-                            ctx.filter = 'saturate(1.5) contrast(1.1) brightness(1.05)';
-                            ctx.drawImage(img, (img.width-size)/2, (img.height-size)/2, size, size, 0, 0, size, size);
-                            
-                            const fw = size * 0.04;
-                            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = fw * 2;
-                            ctx.strokeRect(0, 0, size, size);
-                            
-                            const d = new Date();
-                            const ds = `${d.getMonth()+1}.${d.getDate()}`;
-                            ctx.font = `bold ${size * 0.12}px sans-serif`;
-                            ctx.fillStyle = '#ffffff';
-                            ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 10;
-                            ctx.fillText(ds, size * 0.08, size * 0.92);
-                            
-                            resolve(canvas.toDataURL('image/jpeg', 0.8));
-                        };
-                        img.src = e.target.result;
+            static async applyPopFilter(file = null, comment = "") {
+                return new Promise((resolve, reject) => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 800; canvas.height = 800;
+
+                    const draw = (img = null) => {
+                        try {
+                            // ネオン風グラデーション背景
+                            const grad = ctx.createLinearGradient(0, 0, 800, 800);
+                            grad.addColorStop(0, '#8B5CF6'); grad.addColorStop(1, '#EC4899');
+                            ctx.fillStyle = grad; ctx.fillRect(0, 0, 800, 800);
+
+                            if (img) {
+                                let sw, sh, sx, sy;
+                                const ratio = img.width / img.height;
+                                if (ratio > 1) { sh = img.height; sw = img.height; sx = (img.width - img.height) / 2; sy = 0; }
+                                else { sw = img.width; sh = img.width; sx = 0; sy = (img.height - img.width) / 2; }
+                                
+                                ctx.save();
+                                ctx.beginPath(); ctx.rect(100, 100, 600, 500); ctx.clip();
+                                ctx.drawImage(img, sx, sy, sw, sh, 100, 100, 600, 500);
+                                ctx.restore();
+                                
+                                // 白枠
+                                ctx.strokeStyle = 'white'; ctx.lineWidth = 10;
+                                ctx.strokeRect(100, 100, 600, 500);
+                            }
+
+                            // コメント
+                            if (comment) {
+                                ctx.fillStyle = 'white';
+                                ctx.font = 'bold 48px sans-serif';
+                                ctx.textAlign = 'center';
+                                const wrapText = (t, x, y, mw, lh) => {
+                                    const words = t.split(''); let line = '';
+                                    for(let n = 0; n < words.length; n++) {
+                                        let test = line + words[n];
+                                        if (ctx.measureText(test).width > mw && n > 0) { ctx.fillText(line, x, y); line = words[n]; y += lh; }
+                                        else line = test;
+                                    }
+                                    ctx.fillText(line, x, y);
+                                };
+                                wrapText(comment, 400, img ? 680 : 400, 700, 60);
+                            }
+
+                            // 日付 (ポップな斜め配置)
+                            ctx.save();
+                            ctx.translate(700, 100); ctx.rotate(Math.PI / 4);
+                            ctx.fillStyle = '#FDE047'; ctx.font = 'bold 40px sans-serif';
+                            ctx.fillText(new Date().toLocaleDateString(), 0, 0);
+                            ctx.restore();
+
+                            resolve(canvas.toDataURL('image/jpeg', 0.85));
+                        } catch (e) { reject(e); }
                     };
-                    reader.readAsDataURL(file);
+
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = new Image();
+                            img.onload = () => draw(img);
+                            img.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    } else { draw(); }
                 });
             }
         }
@@ -490,80 +527,74 @@
            UI: FRIENDS PANEL
            ========================================================================== */
         const FriendsPanel = () => {
-            const [draft, setDraft] = useState({ title: '', budget: '', type: 'drink' });
+            const [draft, setDraft] = useState({ comment: '', mediaFiles: [] });
             const [preview, setPreview] = useState(null);
-            const [processedFile, setProcessedFile] = useState(null);
+            const [isGenerating, setIsGenerating] = useState(false);
+            const [fileType, setFileType] = useState('image');
 
             const handlePhoto = async (e) => {
                 if(e.target.files[0]) {
                     const file = e.target.files[0];
-                    const url = await FriendsEngine.applyPopFilter(file);
-                    setPreview(url);
-                    setProcessedFile(dataURLtoFile(url, `party_${Date.now()}.jpg`));
+                    const type = file.type.startsWith('video/') ? 'video' : 'image';
+                    setFileType(type);
+                    setPreview(URL.createObjectURL(file));
+                    setDraft({...draft, mediaFiles: [file]});
                 }
             };
 
-            const share = () => {
-                if(!draft.title) return;
-                const typeIcon = draft.type === 'drink' ? '🍻 飲み会' : draft.type === 'trip' ? '✈️ 旅行' : '🎮 ゲーム';
-                const text = `【遊びの計画】${typeIcon}\n` +
-                    `イベント: ${draft.title}\n` +
-                    `予算目安: ${draft.budget}円\n\n` +
-                    `一緒にどう？🖐️`;
-                
-                shareContent(text, processedFile ? [processedFile] : []);
+            const share = async () => {
+                const file = draft.mediaFiles[0];
+                if(!draft.comment && !file) return;
+
+                setIsGenerating(true);
+                try {
+                    if (fileType === 'video' && file) {
+                        await shareContent(`動画をシェア！`, [file]);
+                    } else if (file || draft.comment) {
+                        const dataUrl = await FriendsEngine.applyPopFilter(file, draft.comment);
+                        const processed = dataURLtoFile(dataUrl, `friends_${Date.now()}.jpg`);
+                        await shareContent(`シェア！`, [processed]);
+                    }
+                } catch (err) {
+                    console.error("Friends share failed:", err);
+                } finally {
+                    setIsGenerating(false);
+                }
             };
 
             return (
-                <div className="bg-white rounded-[3rem] shadow-2xl overflow-hidden border-[10px] border-cyan-50 max-w-2xl mx-auto transition-all">
-                    <div className="bg-cyan-400 p-8 text-white relative overflow-hidden">
-                        <div className="absolute -right-8 -top-8 bg-cyan-300 w-32 h-32 rounded-full opacity-50"></div>
+                <div className="bg-white rounded-[3rem] shadow-2xl overflow-hidden border-[10px] border-purple-50 max-w-2xl mx-auto transition-all">
+                    <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-8 text-white relative overflow-hidden">
+                        <div className="absolute -right-8 -top-8 bg-purple-400 w-32 h-32 rounded-full opacity-50"></div>
                         <h2 className="text-3xl font-black italic flex items-center gap-3 relative z-10">
-                            <Icons.Smile className="w-8 h-8 fill-white" /> 遊び・計画
+                            <Icons.Smile className="w-8 h-8 fill-white" /> FOR FRIENDS
                         </h2>
-                        <p className="text-xs font-bold tracking-tighter uppercase mt-1 relative z-10">Next Event Planning Hub</p>
                     </div>
                     <div className="p-8 space-y-6">
-                        <div className="grid grid-cols-3 gap-2">
-                             {['drink', 'trip', 'game'].map(t => (
-                                 <button key={t} onClick={() => setDraft({...draft, type: t})}
-                                    className={`py-4 rounded-3xl flex flex-col items-center border-[3px] transition-all transform hover:scale-105 ${draft.type === t ? 'border-cyan-400 bg-cyan-50 scale-105' : 'border-gray-100 bg-gray-50 text-gray-400'}`}>
-                                    <span className="text-3xl">{t === 'drink' ? '🍻' : t === 'trip' ? '✈️' : '🎮'}</span>
-                                    <span className="text-[10px] font-black mt-1 uppercase tracking-widest">{t}</span>
-                                 </button>
-                             ))}
-                        </div>
-                        <div className="space-y-4">
-                            <div className="relative">
-                                <span className="absolute left-6 top-1/2 -translate-y-1/2 text-cyan-400 font-black text-xl">#</span>
-                                <input className="w-full bg-gray-50 pl-12 p-5 rounded-3xl outline-none border-2 border-transparent focus:border-cyan-200 font-bold text-lg"
-                                    placeholder="イベント名" value={draft.title} onChange={e => setDraft({...draft, title: e.target.value})} />
-                            </div>
-                            <div className="relative">
-                                <span className="absolute left-6 top-1/2 -translate-y-1/2 text-cyan-400 font-black text-xl">¥</span>
-                                <input className="w-full bg-gray-50 pl-12 p-5 rounded-3xl outline-none border-2 border-transparent focus:border-cyan-200 font-mono text-lg font-bold"
-                                    placeholder="予算目安 (ひとり)" value={draft.budget} onChange={e => setDraft({...draft, budget: e.target.value})} />
-                            </div>
-                        </div>
+                        <textarea className="w-full bg-gray-50 p-6 rounded-3xl outline-none border-2 border-transparent focus:border-purple-200 font-bold text-lg h-40 resize-none text-purple-900"
+                            placeholder="遊びに行こうよ！ / 何してる？" value={draft.comment} onChange={e => setDraft({...draft, comment: e.target.value})} />
 
                         <div className="flex gap-4">
                              <label className="flex-1">
-                                <div className="h-48 bg-gray-50 rounded-[2rem] border-4 border-dashed border-gray-200 flex flex-col items-center justify-center hover:bg-cyan-50 hover:border-cyan-200 transition-all cursor-pointer">
+                                <div className="h-48 bg-gray-50 rounded-[2rem] border-4 border-dashed border-gray-200 flex flex-col items-center justify-center hover:bg-purple-50 hover:border-purple-200 transition-all cursor-pointer">
                                     <Icons.Camera className="w-12 h-12 text-gray-300" />
-                                    <p className="text-[10px] font-black text-gray-400 mt-2 uppercase tracking-widest">Add Party Photo</p>
+                                    <p className="text-[10px] font-black text-gray-400 mt-2 uppercase tracking-widest">Add Photo / Video</p>
                                 </div>
-                                <input type="file" className="hidden" accept="image/*" onChange={handlePhoto} />
+                                <input type="file" className="hidden" accept="image/*,video/*" onChange={handlePhoto} />
                              </label>
                              {preview && (
-                                <div className="flex-1 rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                                    <img src={preview} className="w-full h-full object-cover" />
+                                <div className="flex-1 rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white transform rotate-3 hover:rotate-0 transition-transform duration-500 bg-black">
+                                    {fileType === 'image' 
+                                        ? <img src={preview} className="w-full h-full object-cover" />
+                                        : <video src={preview} className="w-full h-full object-cover" muted />
+                                    }
                                 </div>
                              )}
                         </div>
 
-                        <button onClick={share} disabled={!draft.title}
-                            className="w-full py-6 bg-black text-white rounded-[2rem] font-black text-2xl hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-3 disabled:opacity-30">
-                            <Icons.Send className="w-8 h-8" /> SHARE!
+                        <button onClick={share} disabled={isGenerating || (!draft.comment && !draft.mediaFiles[0])}
+                            className={`w-full py-6 bg-black text-white rounded-[2rem] font-black text-2xl hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-3 disabled:opacity-30`}>
+                            {isGenerating ? '準備中...' : <React.Fragment><Icons.Send className="w-8 h-8" /> SHARE!</React.Fragment>}
                         </button>
                     </div>
                 </div>
