@@ -57,22 +57,32 @@
         };
 
         const shareContent = async (text, files = []) => {
+            const fallback = () => {
+                window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
+            };
+
             try {
                 const canShareFiles = files && files.length > 0 && navigator.canShare && navigator.canShare({ files });
-                if (canShareFiles) {
-                    await navigator.share({
-                        files: files,
-                        title: 'BRIDGE'
-                    });
-                } else if (navigator.share) {
-                    await navigator.share({ text });
-                } else {
-                    throw new Error('Web Share API not available');
-                }
+                
+                // 共有処理（タイムアウト付き）
+                const sharePromise = (async () => {
+                    if (canShareFiles) {
+                        await navigator.share({ files, title: 'BRIDGE' });
+                    } else if (navigator.share) {
+                        await navigator.share({ text });
+                    } else {
+                        throw new Error('Web Share API Not Found');
+                    }
+                })();
+
+                // 2秒以上反応がない場合はフォールバック
+                const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2000));
+                await Promise.race([sharePromise, timeoutPromise]);
+
             } catch (err) {
-                // 共有がキャンセルされた場合(AbortError)以外はLINEスキームにフォールバック
+                // AbortError(ユーザーによるキャンセル)以外はLINEへ飛ばす
                 if (err.name !== 'AbortError') {
-                    window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
+                    fallback();
                 }
             }
         };
