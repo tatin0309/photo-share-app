@@ -123,29 +123,37 @@
             const [previewUrl, setPreviewUrl] = useState(null);
             const [processedFile, setProcessedFile] = useState(null);
             const [isGenerating, setIsGenerating] = useState(false);
+            const [fileType, setFileType] = useState('image'); // 'image' | 'video'
 
             const handleFileChange = (e) => {
                 if (e.target.files && e.target.files[0]) {
                     const file = e.target.files[0];
+                    const type = file.type.startsWith('video/') ? 'video' : 'image';
+                    setFileType(type);
                     setPreviewUrl(URL.createObjectURL(file));
                     setDraft({...draft, mediaFiles: [file]});
                 }
             };
 
             const simulateSend = async () => {
-                if(!draft.message && draft.mediaFiles.length === 0) return;
+                const file = draft.mediaFiles[0];
+                if(!draft.message && !file) return;
+
                 setIsGenerating(true);
                 try {
-                    let file;
-                    if (draft.message || draft.mood) {
-                        const dataUrl = await FamilyEngine.generateMessageCard(draft.message, draft.mood, draft.mediaFiles[0]);
-                        file = dataURLtoFile(dataUrl, `family_${Date.now()}.jpg`);
-                    } else {
-                        file = draft.mediaFiles[0];
+                    if (fileType === 'video' && file) {
+                        // 動画の場合はテキスト等を省き、動画のみ送信
+                        await shareContent(`家族へ動画を送信`, [file]);
+                    } else if (draft.message || draft.mood) {
+                        // テキストまたは気分がある画像の場合はカード生成
+                        const dataUrl = await FamilyEngine.generateMessageCard(draft.message, draft.mood, file);
+                        const processed = dataURLtoFile(dataUrl, `family_${Date.now()}.jpg`);
+                        const moodText = draft.mood ? (draft.mood === 'happy' ? '😊 楽しい' : draft.mood === 'calm' ? '😌 まったり' : '🤩 わくわく') : '';
+                        await shareContent(`【家族連絡】 ${moodText}`, [processed]);
+                    } else if (file) {
+                        // 写真のみの場合
+                        await shareContent(`家族へ写真を共有`, [file]);
                     }
-
-                    const moodText = draft.mood ? (draft.mood === 'happy' ? '😊 楽しい' : draft.mood === 'calm' ? '😌 まったり' : '🤩 わくわく') : '';
-                    await shareContent(`【家族連絡】 ${moodText}`, file ? [file] : []);
                 } catch (err) {
                     console.error("Share failed:", err);
                 } finally {
@@ -175,12 +183,16 @@
                         <div className="flex items-center gap-4">
                             <label className="flex-grow">
                                 <div className="w-full py-4 bg-white border-2 border-dashed border-gray-300 rounded-2xl flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-50">
-                                    <Icons.Image className="w-5 h-5 text-gray-400" />
-                                    <span className="text-gray-500 font-bold">写真を添付</span>
+                                    <Icons.Camera className="w-5 h-5 text-gray-400" />
+                                    <span className="text-gray-500 font-bold">写真・動画を添付</span>
                                 </div>
-                                <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
+                                <input type="file" className="hidden" accept="image/*,video/*" onChange={handleFileChange} />
                             </label>
-                            {previewUrl && <img src={previewUrl} className="w-16 h-16 rounded-lg object-cover border-2 border-pink-200" />}
+                            {previewUrl && (
+                                fileType === 'image' 
+                                    ? <img src={previewUrl} className="w-16 h-16 rounded-lg object-cover border-2 border-pink-200" />
+                                    : <video src={previewUrl} className="w-16 h-16 rounded-lg object-cover border-2 border-pink-200" muted />
+                            )}
                         </div>
                         <button onClick={simulateSend} disabled={isGenerating || (!draft.message && !draft.mood && draft.mediaFiles.length === 0)}
                             className={`w-full py-4 ${isGenerating ? 'bg-gray-400' : 'bg-pink-500 hover:bg-pink-600'} text-white rounded-2xl font-bold shadow-lg transition-all flex items-center justify-center gap-2`}>
